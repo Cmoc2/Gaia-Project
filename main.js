@@ -182,6 +182,7 @@ function game_loop(){
 function init(){
 	rectstart = 10;
 }
+//clooop[]
 //placeholder for the start of the game.
 function theGame(){	
 	canvas.width = canvas.width;
