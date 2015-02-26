@@ -186,17 +186,20 @@ function init(){
 function theGame(){	
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
-	ctx.rect(rectstart,rectstart,90,25);
-	ctx.stroke();
-	ctx.strokeText("Game goes here",rectstart+6,rectstart+15);
+
 	var walker = inGameCityList.head;
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
 		ctx.beginPath();
+		ctx.fillStyle = walker.color;
 		ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
+		ctx.fill();
 		ctx.stroke();
 		walker = walker.next;
 	}
+	ctx.rect(rectstart,rectstart,90,25);
+	ctx.stroke();
+	ctx.strokeText("Game goes here",rectstart+6,rectstart+15);
 }
 
 function toggleGame(){
