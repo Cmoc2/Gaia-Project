@@ -179,7 +179,7 @@ function toggleGame(){
 				pausedGame = true;
 			}
 }
-
+//pikachus
 function menu(){//hi cmoc2 blahblah bloop
 	ctx.drawImage(main_background,0,0, canvas.width,canvas.height);
 	ctx.drawImage(play_button, canvas.width/2-50, canvas.height/2);
