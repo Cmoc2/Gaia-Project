@@ -26,6 +26,16 @@ Key_M = 77, Key_K = 75,
 //bools
 musicOn = true; pausedGame = false;
 
+//city nodes
+var LA = {key: "LA", population: 100000, next: null, HP: 100, posX: 100, posY: 100, color: '#CC0000'};
+var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 100, posX: 200, posY: 200, color: '#00CC00'}; //not sure if this is how you can save 'color';
+
+//cityList
+var cityList = {head: BOSTON, tail: LA, length: 2};
+
+//inGameCityList
+var inGameCityList = {head:null, tail: null, length: 0};
+
 function main(){
 	//Set up the canvas.
 	canvas = document.getElementById("myCanvas");
@@ -46,12 +56,21 @@ function main(){
 	alert("Sound will begin to play");
 	track.play();
 }
+function initiateInGameCityList(){
+	var randNum = Math.floor(Math.random()*cityList.length); //random integer from 0-1
+	var walker = cityList.head;
+	for(var i=0; i<randNum; i++)
+	{
+		walker = walker.next;
+	}
+	inGameCityList = {head: walker, tail: walker, length: 1};
+}
 
-//
 function clickLocation(evt){
 	var mousePos = getMousePos(canvas,evt);
 	switch(_screen){
 		case main_menu:
+			initiateInGameCityList();
 			//if on play button
 			if( mousePos.x >=260 && mousePos.x<=382 && mousePos.y >= 195 && mousePos.y <= 271){
 			init();
@@ -72,11 +91,16 @@ function clickLocation(evt){
 		case settings:
 			break;
 		case play_game:
-				//if inside the box
+				// if inside the box
 			if(mousePos.x>=rectstart && mousePos.x<=rectstart + 90
-				&& mousePos.y>=rectstart&&mousePos.y<=rectstart+25)
-				;//doSomething
-			else {toggleGame();}
+				&& mousePos.y>=rectstart&&mousePos.y<=rectstart+25){window.alert("HI");}
+				//doSomething
+			else {/*toggleGame();*/}
+			var walker = inGameCityList.head;
+			for(var i=0; i<inGameCityList.length; i++)
+			{
+				if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){window.alert(walker.key);}
+			}
 			break;
 		case how_to_play:
 			break;
@@ -134,11 +158,13 @@ function getMousePos(canvas, evt){
 	
 function update(){
 	//if the game is going.
+
 	if(_screen == play_game)
+	{	
 		//if out of screen, go to startPoint
 		if(rectstart+25==canvas.height) rectstart = 10;
 			else rectstart+=1; //else keep going down
-
+	}
 }
 
 function draw(){ //I think this can be cleaned up a bit.
@@ -147,8 +173,6 @@ function draw(){ //I think this can be cleaned up a bit.
 	if(_screen == settings) settingsPage();
 	if(_screen == how_to_play) how_to_play_page();
 }
-
-
 
 function game_loop(){
 	update();
@@ -159,12 +183,20 @@ function init(){
 	rectstart = 10;
 }
 //placeholder for the start of the game.
-function theGame(){
+function theGame(){	
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.rect(rectstart,rectstart,90,25);
 	ctx.stroke();
-	ctx.strokeText("Game goes here",rectstart,rectstart+15);
+	ctx.strokeText("Game goes here",rectstart+6,rectstart+15);
+	var walker = inGameCityList.head;
+	for(var i = 0; i<inGameCityList.length; i++)
+	{
+		ctx.beginPath();
+		ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
+		ctx.stroke();
+		walker = walker.next;
+	}
 }
 
 function toggleGame(){
