@@ -185,9 +185,13 @@ function menu(){//hi cmoc2 blahblah
 	ctx.drawImage(play_button, canvas.width/2-50, canvas.height/2);
 	ctx.drawImage(settings_button, canvas.width-50, canvas.height-50, 50, 50);
 	ctx.drawImage(how_to_play_button, 0, canvas.height-31, 235, 31);
+<<<<<<< HEAD
 	//added something
 	//tothis
 	// yeah.
+=======
+	//functions are cool
+>>>>>>> 935e12cc18648d31b048cb3815c6cb4f83f3b194
 }
 
 function settingsPage(){
