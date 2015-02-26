@@ -180,7 +180,7 @@ function toggleGame(){
 			}
 }
 
-function menu(){
+function menu(){//hi cmoc2
 	ctx.drawImage(main_background,0,0, canvas.width,canvas.height);
 	ctx.drawImage(play_button, canvas.width/2-50, canvas.height/2);
 	ctx.drawImage(settings_button, canvas.width-50, canvas.height-50, 50, 50);
