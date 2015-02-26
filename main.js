@@ -179,6 +179,7 @@ function toggleGame(){
 				pausedGame = true;
 			}
 }
+//pikachus
 //added.
 //somethignafter
 function menu(){//hi cmoc2 blahblah bloop
@@ -190,7 +191,8 @@ function menu(){//hi cmoc2 blahblah bloop
 	//tothis
 	// yeah.
 }
-//charmanders
+
+
 function settingsPage(){
 	ctx.drawImage(settings_background, 0, 0, canvas.width, canvas.height);
 	ctx.strokeText("Setting stuff goes here", canvas.width/2, canvas.height/2 - 15);
