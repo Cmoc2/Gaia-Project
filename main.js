@@ -186,7 +186,7 @@ function menu(){//hi cmoc2 blahblah
 	ctx.drawImage(settings_button, canvas.width-50, canvas.height-50, 50, 50);
 	ctx.drawImage(how_to_play_button, 0, canvas.height-31, 235, 31);
 	
-	
+	//some random change
 }
 
 function settingsPage(){
