@@ -53,7 +53,6 @@ function main(){
 	//Checks pressed key.
 	document.addEventListener("keydown", keyboardAction);
 	
-	alert("Sound will begin to play");
 	track.play();
 }
 function initiateInGameCityList(){
