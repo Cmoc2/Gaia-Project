@@ -12,9 +12,6 @@ how_to_play_image = "how_to_play_button.jpg", main_background_image = "main_back
 game_background_image = "game_bkgrnd.jpg",
 	/*settings*/
 settings_image = "Gear_Icon.png",settings_background_image = "tsunami.jpg",
-
-//test
-rectstart = 10,
 //Numbers correspond to _screen
 main_menu = 1, settings = 2, play_game = 3, how_to_play = 4, 
 pause_menu = 5, no_state = null;
@@ -91,15 +88,10 @@ function clickLocation(evt){
 		case settings:
 			break;
 		case play_game:
-				// if inside the box
-			if(mousePos.x>=rectstart && mousePos.x<=rectstart + 90
-				&& mousePos.y>=rectstart&&mousePos.y<=rectstart+25){window.alert("HI");}
-				//doSomething
-			else {/*toggleGame();*/}
 			walker = inGameCityList.head;
 			for(var i=0; i<inGameCityList.length; i++)
 			{
-				if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){window.alert(walker.key);}
+				if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){console.log(walker.key);}
 			}
 			break;
 		case how_to_play:
@@ -164,9 +156,7 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
-		//if out of screen, go to startPoint
-		if(rectstart+25==canvas.height) rectstart = 10;
-			else rectstart+=1; //else keep going down
+
 	}
 }
 
@@ -208,13 +198,13 @@ function theGame(){
 		//fill box with stats.
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-		ctx.strokeText("City Health: ",0, canvas.height-80);
-		ctx.strokeText("More Stats:",0, canvas.height-60);
-		ctx.strokeText("Tornados Used: ",0, canvas.height-40);
-		} else{ ctx.fillStyle="black"; ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box.
-		ctx.rect(rectstart,rectstart,90,25);
-		ctx.stroke();
-		ctx.strokeText("Game goes here",rectstart+6,rectstart+15);
+		ctx.strokeText("City Health: "+walker.HP,0, canvas.height-60);
+		ctx.strokeText("City Name: "+walker.key,0, canvas.height-80);
+		ctx.strokeText("Population: "+walker.population,0, canvas.height-40);
+		} else{
+			ctx.fillStyle="black"; 
+			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
+		
 		}
 }
 
