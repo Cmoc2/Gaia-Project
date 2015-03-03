@@ -2,7 +2,7 @@ var settings, play_music, play_button, main_background, evt,
 //sounds
 track, button_sound,
 //objects
-canvas, ctx, _screen,
+canvas, ctx, _screen, mousePos = {x: 0, y: 0}, walker,
 //images:
 	/*menu*/
 play_button_image = "play_button.gif",
@@ -53,6 +53,8 @@ function main(){
 	//Checks pressed key.
 	document.addEventListener("keydown", keyboardAction);
 	
+	//Tracks mouse movements
+	canvas.addEventListener("mousemove", mouseLocation);
 	track.play();
 }
 function initiateInGameCityList(){
@@ -66,12 +68,11 @@ function initiateInGameCityList(){
 }
 
 function clickLocation(evt){
-	var mousePos = getMousePos(canvas,evt);
 	switch(_screen){
 		case main_menu:
 			initiateInGameCityList();
 			//if on play button
-			if( mousePos.x >=260 && mousePos.x<=382 && mousePos.y >= 195 && mousePos.y <= 271){
+			if( mousePos.x >=360 && mousePos.x<=490 && mousePos.y >= 310 && mousePos.y <= 480){
 			init();
 			button_sound.play();
 			_screen = play_game;
@@ -95,7 +96,7 @@ function clickLocation(evt){
 				&& mousePos.y>=rectstart&&mousePos.y<=rectstart+25){window.alert("HI");}
 				//doSomething
 			else {/*toggleGame();*/}
-			var walker = inGameCityList.head;
+			walker = inGameCityList.head;
 			for(var i=0; i<inGameCityList.length; i++)
 			{
 				if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){window.alert(walker.key);}
@@ -118,10 +119,10 @@ function keyboardAction(evt){
 			//is pressed outside of the game page. 
 			if(_screen != no_state && _screen != play_game){
 				_screen = main_menu;
+				console.log("Action: Main_Menu");
 			} else toggleGame();
 			//prevents game from starting when Space
 			//is pressed outside of the game page. 
-			console.log("Action: Spacebar");
 			
 			break;
 		case Key_1:
@@ -149,6 +150,9 @@ function keyboardAction(evt){
 	}
 }
 
+function mouseLocation(evt){
+	mousePos = getMousePos(canvas,evt);
+}
 function getMousePos(canvas, evt){
 	var rect = canvas.getBoundingClientRect();
 	//returns mouse position relative to the canvas topleft.
@@ -157,7 +161,7 @@ function getMousePos(canvas, evt){
 	
 function update(){
 	//if the game is going.
-
+	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
 		//if out of screen, go to startPoint
@@ -197,9 +201,21 @@ function theGame(){
 		ctx.stroke();
 		walker = walker.next;
 	}
-	ctx.rect(rectstart,rectstart,90,25);
-	ctx.stroke();
-	ctx.strokeText("Game goes here",rectstart+6,rectstart+15);
+	walker = inGameCityList.head;
+	for(var i=0; i<inGameCityList.length; i++){
+		/*hovering over city*/
+		if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+		//fill box with stats.
+		ctx.fillStyle="white"; //might want to replace with a nice image
+		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+		ctx.strokeText("City Health: ",0, canvas.height-80);
+		ctx.strokeText("More Stats:",0, canvas.height-60);
+		ctx.strokeText("Tornados Used: ",0, canvas.height-40);
+		} else{ ctx.fillStyle="black"; ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box.
+		ctx.rect(rectstart,rectstart,90,25);
+		ctx.stroke();
+		ctx.strokeText("Game goes here",rectstart+6,rectstart+15);
+		}
 }
 
 function toggleGame(){
