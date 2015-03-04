@@ -225,7 +225,7 @@ function game_loop(){
 }
 
 function init(){
-	test = 0;
+	
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
@@ -259,7 +259,7 @@ function theGame(){
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
 		
 		}
-		testDraw();
+		
 }
 
 function menu(){
