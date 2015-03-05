@@ -2,7 +2,7 @@ var settings, play_music, main_background, evt,
 //sounds
 track, button_sound,
 //objects
-canvas, ctx, _screen, mousePos = {x: 0, y: 0}, walker,
+canvas, ctx, _screen, mousePos = {x: 0, y: 0}, walker, //test coinFrame=5, coin_image = "coin-sprite-animation-sprite-sheet.png",
 //images:
 back_button_image = "back_button.png",
 cyan_button_image = "cyan_button.png",
@@ -207,13 +207,12 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
-		
 	}
 }
 
 function draw(){
 	if(_screen == main_menu) menu();
-	if(_screen == play_game){ theGame();}
+	if(_screen == play_game){ theGame(); /*test codetoMakecoinRotate();*/}
 	if(_screen == settings) settingsPage();
 	if(_screen == how_to_play) how_to_play_page();
 	if(_screen == pause_menu) pauseMenu();
@@ -233,7 +232,6 @@ function theGame(){
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
-
 	var walker = inGameCityList.head;
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
@@ -344,14 +342,22 @@ function loadImages(){
 	//load the pause button
 	pause_button = new Image();
 	pause_button.src = pause_button_image;
+/*	//load the test coin
+	coin = new Image();
+	coin.src = coin_image;
+*/
 }
 
 function loadAudio(){
 	track = document.getElementById("gameAudio");
 	button_sound = document.getElementById("button_sound");
 }
-
-
+/* test
+function codetoMakecoinRotate(){
+	ctx.drawImage(coin,44*coinFrame,0,44,40, mousePos.x-22,mousePos.y-20,44,40);
+	coinFrame+=1;
+		if(coinFrame>9) coinFrame=0;
+} */
 main();
 setInterval(game_loop, 30);
 
