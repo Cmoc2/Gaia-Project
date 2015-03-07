@@ -282,11 +282,6 @@ function theGame(){
 			ctx.strokeText("Deity Name: "+walker.key,0, canvas.height-60);
 			ctx.strokeText("Damage: "+walker.damage,0, canvas.height-80);
 		}
-		else
-		{
-			ctx.fillStyle="black"; 
-			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-		}
 		walker = walker.next;
 	}
 	
@@ -313,13 +308,9 @@ function theGame(){
 		ctx.strokeText("City Health: "+walker.HP,0, canvas.height-60);
 		ctx.strokeText("City Name: "+walker.key,0, canvas.height-80);
 		ctx.strokeText("Population: "+walker.population,0, canvas.height-40);
-		} else{
-			ctx.fillStyle="black"; 
-			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
-		
-		walker = walker.next;
 		}
-		
+		walker = walker.next;
+	}
 		
 }
 
