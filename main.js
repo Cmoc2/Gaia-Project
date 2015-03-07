@@ -8,7 +8,7 @@ back_button_image = "back_button.png",
 cyan_button_image = "cyan_button.png",
 dark_button_image = "dark_button.png",
 	/*menu*/
-play_button_image = "play_button.gif",
+play_button_image = "play_button.png",
 how_to_play_image = "how_to_play_button.jpg", main_background_image = "main_background.jpg",
 
 	/*game stuff*/
@@ -98,8 +98,8 @@ function clickLocation(evt){
 				_screen = main_menu;
 				}
 			//if on music button
-			if(mousePos.x>=canvas.width/2-126 && mousePos.x<=canvas.width/2-126+cyan_button.width
-				&& mousePos.y>= canvas.height/2-35 && mousePos.y<= canvas.height/2-35+cyan_button.height){
+			if(mousePos.x>=canvas.width/2-cyan_button.width/2 && mousePos.x<=canvas.width/2+cyan_button.width/2
+				&& mousePos.y>= canvas.height/2-cyan_button.height/2 && mousePos.y<= canvas.height/2+cyan_button.height/2){
 					if(musicOn){
 						track.load();
 						musicOn = false;
@@ -270,10 +270,10 @@ function menu(){
 function settingsPage(){
 	ctx.drawImage(settings_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(back_button,0, 0, 50, 50); //top left corner
-	ctx.drawImage(cyan_button, canvas.width/2-126, canvas.height/2-35);
+	ctx.drawImage(cyan_button, canvas.width/2-cyan_button.width/2, canvas.height/2-cyan_button.height/2);
 	console.log(cyan_button.height);
-	if(musicOn) ctx.strokeText("Music: On ", canvas.width/2-15, canvas.height/2);
-		else ctx.strokeText("Music: Off ", canvas.width/2-15, canvas.height/2);
+	if(musicOn) ctx.strokeText("Music: On ", canvas.width/2-cyan_button.width/4+35, canvas.height/2-cyan_button.height/4+15);
+		else ctx.strokeText("Music: Off ", canvas.width/2-cyan_button.width/4+35, canvas.height/2-cyan_button.height/4+15);
 }
 
 function how_to_play_page(){
