@@ -31,8 +31,9 @@ musicOn = true, soundFX = true;
 
 
 //deity nodes
-var SHIVA = {key: "SHIVA", damage: 15, next: null, posX: 600, posY: 100, color: '#00CCFF'};
-var IFRIT = {key: "IFRIT", damage: 15, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
+var deity = null;
+var SHIVA = {key: "SHIVA", damage: 5, next: null, posX: 600, posY: 100, color: '#00CCFF'};
+var IFRIT = {key: "IFRIT", damage: 10, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
 var TITAN = {key: "TITAN", damage: 15, next: IFRIT, posX: 600, posY: 300, color: '#996633'};
 
 //deity list
@@ -132,17 +133,25 @@ function clickLocation(evt){
 			break;
 		case play_game:
 			walker = inGameCityList.head;
+			//check if on cities.
 			for(var i=0; i<inGameCityList.length; i++)
 			{	//if on a city
 				if(walker.HP<=0) continue;
-				 if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
-					walker.HP -=20;
+				 if(deity != null && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+					walker.HP -=deity.damage;
 					if(walker.HP<=0){
 						console.log("Destroyed");
 						//remove from node list;
 					}
 				}
 					
+			}
+			//check if on deity
+			for(var z = deityList.head; z!=null; z = z.next){
+				if(mousePos.x>=z.posX && mousePos.x<=z.posX+180 && mousePos.y>=z.posY && mousePos.y<=z.posY+80){
+					deity = z;
+					continue;
+				}
 			}
 			//if on pause
 			if(mousePos.x >= canvas.width - 50 && mousePos.x <= canvas.width && mousePos.y >=0 && mousePos.y <= 50){
@@ -235,6 +244,8 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{
+		if(deity != null)
+		ctx.strokeText("Deity Selected: " + deity.key, 1,10);
 	}
 }
 
@@ -247,12 +258,12 @@ function draw(){
 }
 
 function game_loop(){
-	update();
 	draw();
+	update();
 }
 
 function init(){
-	
+	deity = null;
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
@@ -304,7 +315,7 @@ function theGame(){
 	var deityWalker = deityList.head;
 	for(var i=0; i<inGameCityList.length; i++){
 		/*hovering over functioning city*/
-		if(walker.HP != 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+		if(walker.HP > 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
 		//fill box with stats.
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
