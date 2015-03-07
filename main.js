@@ -8,14 +8,16 @@ back_button_image = "back_button.png",
 cyan_button_image = "cyan_button.png",
 dark_button_image = "dark_button.png",
 	/*menu*/
+gaias_revenge_title_image = "Gaias_Revenge_Title.png";
 play_button_image = "play_button.png",
 how_to_play_image = "how_to_play_button.png", main_background_image = "main_background.jpg",
+settings_image = "Gear_Icon.png",
 
 	/*game stuff*/
 game_background_image = "game_bkgrnd.jpg",
 pause_button_image = "pause_button.png",
 	/*settings*/
-settings_image = "Gear_Icon.png",settings_background_image = "tsunami.jpg",
+settings_background_image = "tsunami.jpg",
 //Numbers correspond to _screen
 main_menu = 1, settings = 2, play_game = 3, how_to_play = 4, 
 pause_menu = 5,
@@ -63,10 +65,12 @@ function initiateInGameCityList(){
 	var walker = cityList.head;
 	for(var i=0; i<randNum; i++)
 	{
-		walker.HP = walker.resetHP;
 		walker = walker.next;
 	}
 	inGameCityList = {head: walker, tail: walker, length: 1};
+	
+	//reset HP
+	for(var z = cityList.head; z!=null; z = z.next){z.HP = z.resetHP}
 }
 
 function clickLocation(evt){
@@ -281,6 +285,7 @@ function menu(){
 	ctx.drawImage(play_button, canvas.width/2-50, canvas.height/2);
 	ctx.drawImage(settings_button, canvas.width-50, canvas.height-50, 50, 50);
 	ctx.drawImage(how_to_play_button, 0, canvas.height-31, 235, 31);
+	ctx.drawImage(gaias_revenge_title, canvas.width/2-gaias_revenge_title.width/2,10);
 }
 
 function settingsPage(){
@@ -360,6 +365,9 @@ function loadImages(){
 	//load the pause button
 	pause_button = new Image();
 	pause_button.src = pause_button_image;
+	//load the title iage
+	gaias_revenge_title = new Image();
+	gaias_revenge_title.src = gaias_revenge_title_image;
 /*	//load the test coin
 	coin = new Image();
 	coin.src = coin_image;
