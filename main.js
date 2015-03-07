@@ -72,11 +72,11 @@ function initiateInGameCityList(){
 function clickLocation(evt){
 	switch(_screen){
 		case main_menu:
-			initiateInGameCityList();
 			//if on play button
 			if( mousePos.x >=canvas.width/2-50 && mousePos.x<=canvas.width/2-50 + play_button.width
 				 && mousePos.y >= canvas.height/2 && mousePos.y <= canvas.height/2 + play_button.height){
 			init();
+			initiateInGameCityList();
 			if(soundFX == true) button_sound.play();
 			_screen = play_game;
 			}	//if on gear icon
