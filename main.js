@@ -28,8 +28,8 @@ Key_M = 77, Key_K = 75,
 musicOn = true, soundFX = true;
 
 //city nodes
-var LA = {key: "LA", population: 100000, next: null, HP: 100, posX: 100, posY: 100, color: '#CC0000'};
-var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 100, posX: 200, posY: 200, color: '#00CC00'}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 100000, next: null, HP: 100, posX: 100, posY: 100, color: '#CC0000', resetHP: 100};
+var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 100, posX: 200, posY: 200, color: '#00CC00', resetHP: 100}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: BOSTON, tail: LA, length: 2};
@@ -63,6 +63,7 @@ function initiateInGameCityList(){
 	var walker = cityList.head;
 	for(var i=0; i<randNum; i++)
 	{
+		walker.HP = walker.resetHP;
 		walker = walker.next;
 	}
 	inGameCityList = {head: walker, tail: walker, length: 1};
@@ -109,12 +110,26 @@ function clickLocation(evt){
 					}
 					if(soundFX == true) button_sound.play();
 			}
+			//if on sound button
+			if(mousePos.x>=canvas.width/2-cyan_button.width/2 && mousePos.x<=canvas.width/2+cyan_button.width/2
+				&& mousePos.y >=10+canvas.height/2-cyan_button.height/2+cyan_button.height && mousePos.y <10+canvas.height/2-cyan_button.height/2+cyan_button.height*2){
+				soundFX = !soundFX;
+				if(soundFX == true) button_sound.play();
+			}
 			break;
 		case play_game:
 			walker = inGameCityList.head;
 			for(var i=0; i<inGameCityList.length; i++)
-			{
-				if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){console.log(walker.key);}
+			{	//if on a city
+				if(walker.HP<=0) continue;
+				 if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+					walker.HP -=20;
+					if(walker.HP<=0){
+						console.log("Destroyed");
+						//remove from node list;
+					}
+				}
+					
 			}
 			//if on pause
 			if(mousePos.x >= canvas.width - 50 && mousePos.x <= canvas.width && mousePos.y >=0 && mousePos.y <= 50){
@@ -235,6 +250,7 @@ function theGame(){
 	var walker = inGameCityList.head;
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
+		if(walker.HP<=0){walker = walker.next; continue;}
 		ctx.beginPath();
 		ctx.fillStyle = walker.color;
 		ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
@@ -244,8 +260,8 @@ function theGame(){
 	}
 	walker = inGameCityList.head;
 	for(var i=0; i<inGameCityList.length; i++){
-		/*hovering over city*/
-		if(Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+		/*hovering over functioning city*/
+		if(walker.HP != 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
 		//fill box with stats.
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
@@ -270,10 +286,12 @@ function menu(){
 function settingsPage(){
 	ctx.drawImage(settings_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(back_button,0, 0, 50, 50); //top left corner
+	//music button
 	ctx.drawImage(cyan_button, canvas.width/2-cyan_button.width/2, canvas.height/2-cyan_button.height/2);
-	console.log(cyan_button.height);
-	if(musicOn) ctx.strokeText("Music: On ", canvas.width/2-cyan_button.width/4+35, canvas.height/2-cyan_button.height/4+15);
-		else ctx.strokeText("Music: Off ", canvas.width/2-cyan_button.width/4+35, canvas.height/2-cyan_button.height/4+15);
+	ctx.strokeText("Music: " + isOn(musicOn), canvas.width/2-cyan_button.width/4+35, canvas.height/2-cyan_button.height/4+15);
+	//soundFX
+	ctx.drawImage(cyan_button, canvas.width/2-cyan_button.width/2, 10+canvas.height/2-cyan_button.height/2+cyan_button.height);
+	ctx.strokeText("Sound: " + isOn(soundFX), canvas.width/2-cyan_button.width/4+35, 10+canvas.height/2-cyan_button.height/4+15+cyan_button.height);
 }
 
 function how_to_play_page(){
@@ -297,10 +315,10 @@ function pauseMenu(){
 	ctx.strokeText("Return to game", 325+dark_button.width/4, 170+25+40*1);
 	
 	ctx.drawImage(dark_button, 325,170+40*2);
-	ctx.strokeText("Music: "+ musicOn, 325+dark_button.width/4, 170+25+40*2);
+	ctx.strokeText("Music: "+ isOn(musicOn), 325+dark_button.width/4, 170+25+40*2);
 	
 	ctx.drawImage(dark_button, 325,170+40*3);
-	ctx.strokeText("Sound Effects: "+ soundFX, 325+dark_button.width/4, 170+25+40*3);
+	ctx.strokeText("Sound Effects: "+ isOn(soundFX), 325+dark_button.width/4, 170+25+40*3);
 	
 	ctx.drawImage(dark_button, 325,170+40*4);
 	ctx.strokeText("Quit Game", 325+dark_button.width/4, 170+25+40*4);
@@ -348,6 +366,9 @@ function loadImages(){
 */
 }
 
+function isOn(bool){
+	if(bool) return "on"; else return "off"	;
+}
 function loadAudio(){
 	track = document.getElementById("gameAudio");
 	button_sound = document.getElementById("button_sound");
