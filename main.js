@@ -281,7 +281,6 @@ function theGame(){
 			//fill box with stats.
 			ctx.fillStyle="white"; //might want to replace with a nice image
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-			ctx.strokeText("Deity Name: "+walker.key,10, canvas.height-60);
 			ctx.strokeText("Damage: "+walker.damage,10, canvas.height-80);
 		}
 
