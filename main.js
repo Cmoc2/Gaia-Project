@@ -32,16 +32,16 @@ musicOn = true, soundFX = true;
 
 //deity nodes
 var deity = null;
-var SHIVA = {key: "SHIVA", damage: 5, next: null, posX: 600, posY: 100, color: '#00CCFF'};
-var IFRIT = {key: "IFRIT", damage: 10, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
+var SHIVA = {key: "SHIVA", damage: 15, next: null, posX: 600, posY: 100, color: '#00CCFF'};
+var IFRIT = {key: "IFRIT", damage: 15, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
 var TITAN = {key: "TITAN", damage: 15, next: IFRIT, posX: 600, posY: 300, color: '#996633'};
 
 //deity list
 var deityList = {head: TITAN, tail: SHIVA, length: 3};
 
 //city nodes
-var LA = {key: "LA", population: 100000, next: null, HP: 100, posX: 100, posY: 100, color: '#CC0000', resetHP: 100};
-var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 100, posX: 200, posY: 200, color: '#00CC00', resetHP: 100}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 100000, next: null, HP: 2000, posX: 100, posY: 100, color: '#CC0000', resetHP: 100, resistance: null, resisteAmount: 2};
+var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 1000, posX: 200, posY: 200, color: '#00CC00', resetHP: 100, resistance: null, resistAmount: 2}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: BOSTON, tail: LA, length: 2};
@@ -79,8 +79,12 @@ function initiateInGameCityList(){
 	}
 	inGameCityList = {head: walker, tail: walker, length: 1};
 	
-	//reset HP
-	for(var z = cityList.head; z!=null; z = z.next){z.HP = z.resetHP}
+	//reset HP & resistance
+	for(var z = cityList.head; z!=null; z = z.next){
+		z.HP = z.resetHP
+		z.resistance = 0;
+	}
+	
 }
 
 function clickLocation(evt){
@@ -138,12 +142,20 @@ function clickLocation(evt){
 			{	//if on a city
 				if(walker.HP<=0) continue;
 				 if(deity != null && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
-					walker.HP -=deity.damage;
+					//resistance code.
+					if(walker.resistance == deity){
+						walker.HP -= deity.damage-walker.resistAmount>=0?
+									deity.damage-walker.resistAmount:0;
+						walker.resistAmount +=2;
+						}else{
+							walker.resistAmount = 2; 
+							walker.HP -=deity.damage;}
+					walker.resistance = deity;
 					if(walker.HP<=0){
 						console.log("Destroyed");
 						//remove from node list;
 					}
-				}
+				} else deity = null;
 					
 			}
 			//check if on deity
@@ -244,6 +256,8 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{
+		if(LA.HP>0)LA.HP +=1;
+		if(BOSTON.HP>0)BOSTON.HP+=1;
 		if(deity != null)
 		ctx.strokeText("Deity Selected: " + deity.key, 1,10);
 	}
@@ -322,7 +336,7 @@ function theGame(){
 		ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
 		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
 		ctx.strokeText("Population: "+walker.population,10, canvas.height-40);
-
+		if(walker.resistance.key) ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
 		}
 		walker = walker.next;
 	}
