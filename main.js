@@ -265,8 +265,9 @@ function theGame(){
 	for(var i = 0; i<deityList.length; i++)
 	{
 		ctx.fillStyle = walker.color;
-		ctx.lineWidth = "5";
+		// ctx.lineWidth = "5";
 		ctx.fillRect(walker.posX, walker.posY, 180, 80);
+		ctx.strokeText(walker.key, walker.posX+75, walker.posY+40)
 		walker = walker.next;
 	}
 	//hovering for deities
@@ -316,8 +317,8 @@ function theGame(){
 			ctx.fillStyle="black"; 
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
 		
-		}
 		walker = walker.next;
+		}
 		
 		
 }
