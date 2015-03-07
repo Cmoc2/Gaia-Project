@@ -234,7 +234,7 @@ function update(){
 	//if the game is going.
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
-	{	
+	{
 	}
 }
 
@@ -256,7 +256,8 @@ function init(){
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
-function theGame(){	
+function theGame(){
+	var showGod = false;
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
@@ -276,6 +277,7 @@ function theGame(){
 	{
 		if(mousePos.x >= walker.posX && mousePos.x <= walker.posX+180 && mousePos.y >= walker.posY && mousePos.y <= walker.posY+80)
 		{
+			showGod = true;
 			//fill box with stats.
 			ctx.fillStyle="white"; //might want to replace with a nice image
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
@@ -284,6 +286,7 @@ function theGame(){
 		}
 		else
 		{
+			showGod = false;
 			ctx.fillStyle="black"; 
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
 		}
@@ -304,6 +307,7 @@ function theGame(){
 		walker = walker.next;
 	}
 	walker = inGameCityList.head;
+	var deityWalker = deityList.head;
 	for(var i=0; i<inGameCityList.length; i++){
 		/*hovering over functioning city*/
 		if(walker.HP != 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
@@ -313,7 +317,9 @@ function theGame(){
 		ctx.strokeText("City Health: "+walker.HP,0, canvas.height-60);
 		ctx.strokeText("City Name: "+walker.key,0, canvas.height-80);
 		ctx.strokeText("Population: "+walker.population,0, canvas.height-40);
-		} else{
+		} 
+		else if(showGod == true){};
+		else{
 			ctx.fillStyle="black"; 
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
 		
