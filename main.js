@@ -29,6 +29,15 @@ Key_M = 77, Key_K = 75,
 //bools
 musicOn = true, soundFX = true;
 
+
+//deity nodes
+var SHIVA = {key: "SHIVA", damage: 15, next: null, posX: 600, posY: 100, color: '#00CCFF'};
+var IFRIT = {key: "IFRIT", damage: 15, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
+var TITAN = {key: "TITAN", damage: 15, next: IFRIT, posX: 600, posY: 300, color: '#996633'};
+
+//deity list
+var deityList = {head: TITAN, tail: SHIVA, length: 3};
+
 //city nodes
 var LA = {key: "LA", population: 100000, next: null, HP: 100, posX: 100, posY: 100, color: '#CC0000', resetHP: 100};
 var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 100, posX: 200, posY: 200, color: '#00CC00', resetHP: 100}; //not sure if this is how you can save 'color';
@@ -251,7 +260,38 @@ function theGame(){
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
-	var walker = inGameCityList.head;
+	
+	var walker = deityList.head;
+	for(var i = 0; i<deityList.length; i++)
+	{
+		ctx.fillStyle = walker.color;
+		ctx.lineWidth = "5";
+		ctx.fillRect(walker.posX, walker.posY, 180, 80);
+		walker = walker.next;
+	}
+	//hovering for deities
+	walker = deityList.head;
+	for(var i = 0; i<deityList.length; i++)
+	{
+		if(mousePos.x >= walker.posX && mousePos.x <= walker.posX+180 && mousePos.y >= walker.posY && mousePos.y <= walker.posY+80)
+		{
+			//fill box with stats.
+			ctx.fillStyle="white"; //might want to replace with a nice image
+			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+			ctx.strokeText("Deity Name: "+walker.key,0, canvas.height-60);
+			ctx.strokeText("Damage: "+walker.damage,0, canvas.height-80);
+		}
+		else
+		{
+			ctx.fillStyle="black"; 
+			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+		}
+		walker = walker.next;
+	}
+	
+	ctx.strokeStyle = "black";
+	ctx.lineWidth = "1";
+	walker = inGameCityList.head;
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
 		if(walker.HP<=0){walker = walker.next; continue;}
@@ -277,6 +317,8 @@ function theGame(){
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
 		
 		}
+		walker = walker.next;
+		
 		
 }
 
