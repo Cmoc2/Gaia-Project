@@ -281,18 +281,10 @@ function theGame(){
 			//fill box with stats.
 			ctx.fillStyle="white"; //might want to replace with a nice image
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-			ctx.strokeText("Deity Name: "+walker.key,0, canvas.height-60);
-			ctx.strokeText("Damage: "+walker.damage,0, canvas.height-80);
+			ctx.strokeText("Deity Name: "+walker.key,10, canvas.height-60);
+			ctx.strokeText("Damage: "+walker.damage,10, canvas.height-80);
 		}
-<<<<<<< HEAD
-		else
-		{
-			showGod = false;
-			ctx.fillStyle="black"; 
-			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-		}
-=======
->>>>>>> 11eee7a7e8d67c9edc0a0aaf57f7a8314bb6e66e
+
 		walker = walker.next;
 	}
 	
@@ -317,19 +309,10 @@ function theGame(){
 		//fill box with stats.
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-		ctx.strokeText("City Health: "+walker.HP,0, canvas.height-60);
-		ctx.strokeText("City Name: "+walker.key,0, canvas.height-80);
-		ctx.strokeText("Population: "+walker.population,0, canvas.height-40);
-<<<<<<< HEAD
-		} 
-		else if(showGod == true){};
-		else{
-			ctx.fillStyle="black"; 
-			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height); }//black box should be decorated.
-		
-		walker = walker.next;
-=======
->>>>>>> 11eee7a7e8d67c9edc0a0aaf57f7a8314bb6e66e
+		ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
+		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
+		ctx.strokeText("Population: "+walker.population,10, canvas.height-40);
+
 		}
 		walker = walker.next;
 	}
