@@ -9,7 +9,7 @@ cyan_button_image = "cyan_button.png",
 dark_button_image = "dark_button.png",
 	/*menu*/
 play_button_image = "play_button.png",
-how_to_play_image = "how_to_play_button.jpg", main_background_image = "main_background.jpg",
+how_to_play_image = "how_to_play_button.png", main_background_image = "main_background.jpg",
 
 	/*game stuff*/
 game_background_image = "game_bkgrnd.jpg",
