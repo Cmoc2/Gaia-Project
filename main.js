@@ -14,7 +14,7 @@ how_to_play_image = "how_to_play_button.png", main_background_image = "main_back
 settings_image = "Gear_Icon.png",
 
 	/*game stuff*/
-game_background_image = "game_bkgrnd.jpg",
+game_background_image = "game_bkgrnd_water.jpg",
 pause_button_image = "pause_button.png",
 	/*settings*/
 settings_background_image = "tsunami.jpg",
@@ -27,7 +27,7 @@ Key_1 = 49, Key_2 = 50, Key_3 = 51, Key_4 = 52,
 Key_M = 77, Key_K = 75,
 
 //bools
-musicOn = true, soundFX = true;
+musicOn = true, soundFX = true, showGod = false;
 
 
 //deity nodes
@@ -218,16 +218,21 @@ function keyboardAction(evt){
 					else{ _screen = main_menu; console.log("Action: Main Menu");}
 			break;
 		case Key_1:
-			console.log("Action 1:menu");
-			_screen = main_menu;
+			if(_screen == play_game){
+				console.log("Action 1:Shiva");
+				deity = SHIVA;}
 			break;
 		case Key_2:
-			console.log("Action 2: setting");
-			_screen = settings;
+			if(_screen == play_game){
+				console.log("Action 2: Ifrit");
+				deity = IFRIT;
+			} 
 			break;
 		case Key_3:
-			console.log("Action 3: game");
-			_screen = play_game;
+			if(_screen == play_game){
+				console.log("Action 3: Titan");
+				deity = TITAN;
+			} 
 			break;
 		case Key_4:
 			console.log("Action 4");
@@ -255,9 +260,9 @@ function update(){
 	//if the game is going.
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
-	{
-		if(LA.HP>0)LA.HP +=1;
-		if(BOSTON.HP>0)BOSTON.HP+=1;
+	{	
+		//displays diety name on top left corner so player knows
+		//which diety is currently selected. Waiting for borders.
 		if(deity != null)
 		ctx.strokeText("Deity Selected: " + deity.key, 1,10);
 	}
@@ -282,12 +287,13 @@ function init(){
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
 function theGame(){
-	var showGod = false;
+	showGod = false;
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
 	
 	var walker = deityList.head;
+	//Displays Gods on the right side.
 	for(var i = 0; i<deityList.length; i++)
 	{
 		ctx.fillStyle = walker.color;
@@ -326,7 +332,7 @@ function theGame(){
 		walker = walker.next;
 	}
 	walker = inGameCityList.head;
-	var deityWalker = deityList.head;
+	var deityWalker = deityList.head; //What's this?
 	for(var i=0; i<inGameCityList.length; i++){
 		/*hovering over functioning city*/
 		if(walker.HP > 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
@@ -336,7 +342,10 @@ function theGame(){
 		ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
 		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
 		ctx.strokeText("Population: "+walker.population,10, canvas.height-40);
-		if(walker.resistance.key) ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
+		if(walker.resistance.key) 
+			if(walker.resistance.damage>walker.resistAmount)
+				ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
+				else ctx.strokeText("Fully Resistant to: "+ walker.resistance.key, 10, canvas.height-20);
 		}
 		walker = walker.next;
 	}
@@ -444,13 +453,24 @@ function loadAudio(){
 	track = document.getElementById("gameAudio");
 	button_sound = document.getElementById("button_sound");
 }
+
 /* test
 function codetoMakecoinRotate(){
 	ctx.drawImage(coin,44*coinFrame,0,44,40, mousePos.x-22,mousePos.y-20,44,40);
 	coinFrame+=1;
 		if(coinFrame>9) coinFrame=0;
 } */
+
+function upgrade(deity){
+	deity.damage *=1.5;
+}
+function game_health(){
+	//simple increase of city health over time.
+		if(LA.HP>0)LA.HP +=10;
+		if(BOSTON.HP>0)BOSTON.HP+=10;
+}
 main();
 setInterval(game_loop, 30);
+setInterval(game_health, 500);
 
 
