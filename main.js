@@ -40,8 +40,8 @@ var TITAN = {key: "TITAN", damage: 1500, next: IFRIT, posX: 600, posY: 100, colo
 var deityList = {head: TITAN, tail: SHIVA, length: 3};
 
 //city nodes
-var LA = {key: "LA", population: 100000, next: null,  posX: 100, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resisteAmount: 2};
-var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 2}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 100000, next: null,  posX: 100, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
+var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: BOSTON, tail: LA, length: 2};
@@ -146,9 +146,9 @@ function clickLocation(evt){
 					if(walker.resistance == deity){
 						walker.population -= deity.damage-walker.resistAmount>=0?
 									deity.damage-walker.resistAmount:0;
-						walker.resistAmount +=2;
+						walker.resistAmount +=150;
 						}else{
-							walker.resistAmount = 2; 
+							walker.resistAmount = 150; 
 							walker.population -=deity.damage;}
 					walker.resistance = deity;
 					if(walker.population<=0){
