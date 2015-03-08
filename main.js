@@ -32,16 +32,16 @@ musicOn = true, soundFX = true, showGod = false;
 
 //deity nodes
 var deity = null;
-var SHIVA = {key: "SHIVA", damage: 15, next: null, posX: 600, posY: 100, color: '#00CCFF'};
-var IFRIT = {key: "IFRIT", damage: 15, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
-var TITAN = {key: "TITAN", damage: 15, next: IFRIT, posX: 600, posY: 300, color: '#996633'};
+var SHIVA = {key: "SHIVA", damage: 1500, next: null, posX: 600, posY: 300, color: '#00CCFF'};
+var IFRIT = {key: "IFRIT", damage: 1500, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
+var TITAN = {key: "TITAN", damage: 1500, next: IFRIT, posX: 600, posY: 100, color: '#996633'};
 
 //deity list
 var deityList = {head: TITAN, tail: SHIVA, length: 3};
 
 //city nodes
-var LA = {key: "LA", population: 100000, next: null, HP: 2000, posX: 100, posY: 100, color: '#CC0000', resetHP: 100, resistance: null, resisteAmount: 2};
-var BOSTON = {key: "BOSTON", population: 90000, next: LA, HP: 1000, posX: 200, posY: 200, color: '#00CC00', resetHP: 100, resistance: null, resistAmount: 2}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 100000, next: null,  posX: 100, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resisteAmount: 2};
+var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 2}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: BOSTON, tail: LA, length: 2};
@@ -81,7 +81,7 @@ function initiateInGameCityList(){
 	
 	//reset HP & resistance
 	for(var z = cityList.head; z!=null; z = z.next){
-		z.HP = z.resetHP
+		z.population = z.resetPopulation
 		z.resistance = 0;
 	}
 	
@@ -140,18 +140,18 @@ function clickLocation(evt){
 			//check if on cities.
 			for(var i=0; i<inGameCityList.length; i++)
 			{	//if on a city
-				if(walker.HP<=0) continue;
+				if(walker.population<=0) continue;
 				 if(deity != null && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
 					//resistance code.
 					if(walker.resistance == deity){
-						walker.HP -= deity.damage-walker.resistAmount>=0?
+						walker.population -= deity.damage-walker.resistAmount>=0?
 									deity.damage-walker.resistAmount:0;
 						walker.resistAmount +=2;
 						}else{
 							walker.resistAmount = 2; 
-							walker.HP -=deity.damage;}
+							walker.population -=deity.damage;}
 					walker.resistance = deity;
-					if(walker.HP<=0){
+					if(walker.population<=0){
 						console.log("Destroyed");
 						//remove from node list;
 					}
@@ -219,8 +219,8 @@ function keyboardAction(evt){
 			break;
 		case Key_1:
 			if(_screen == play_game){
-				console.log("Action 1:Shiva");
-				deity = SHIVA;}
+				console.log("Action 1:Titan");
+				deity = TITAN;}
 			break;
 		case Key_2:
 			if(_screen == play_game){
@@ -230,8 +230,8 @@ function keyboardAction(evt){
 			break;
 		case Key_3:
 			if(_screen == play_game){
-				console.log("Action 3: Titan");
-				deity = TITAN;
+				console.log("Action 3: Shiva");
+				deity = SHIVA;
 			} 
 			break;
 		case Key_4:
@@ -263,8 +263,7 @@ function update(){
 	{	
 		//displays diety name on top left corner so player knows
 		//which diety is currently selected. Waiting for borders.
-		if(deity != null)
-		ctx.strokeText("Deity Selected: " + deity.key, 1,10);
+
 	}
 }
 
@@ -299,8 +298,30 @@ function theGame(){
 		ctx.fillStyle = walker.color;
 		// ctx.lineWidth = "5";
 		ctx.fillRect(walker.posX, walker.posY, 180, 80);
-		ctx.strokeText(walker.key, walker.posX+75, walker.posY+40)
+		ctx.strokeText(walker.key+" ("+(i+1)+")", walker.posX+75, walker.posY+40)
 		walker = walker.next;
+		
+		if(deity != null)
+		{
+			ctx.strokeText("Deity Selected: " + deity.key, 1,10);
+			ctx.strokeStyle = "red";
+			ctx.lineWidth = "5";
+			switch(deity.key)
+			{
+				case "SHIVA":
+					ctx.rect(SHIVA.posX, SHIVA.posY, 180, 80);
+					break;
+				case "TITAN":
+					ctx.rect(TITAN.posX, TITAN.posY, 180, 80);
+					break;
+				case "IFRIT":
+					ctx.rect(IFRIT.posX, IFRIT.posY, 180, 80);
+					break;
+			}
+			ctx.stroke();
+			ctx.lineWidth = "1";
+			ctx.strokeStyle = "black";
+		}
 	}
 	//hovering for deities
 	walker = deityList.head;
@@ -323,7 +344,7 @@ function theGame(){
 	walker = inGameCityList.head;
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
-		if(walker.HP<=0){walker = walker.next; continue;}
+		if(walker.population<=0){walker = walker.next; continue;}
 		ctx.beginPath();
 		ctx.fillStyle = walker.color;
 		ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
@@ -332,16 +353,15 @@ function theGame(){
 		walker = walker.next;
 	}
 	walker = inGameCityList.head;
-	var deityWalker = deityList.head; //What's this?
 	for(var i=0; i<inGameCityList.length; i++){
 		/*hovering over functioning city*/
-		if(walker.HP > 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+		if(walker.population > 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
 		//fill box with stats.
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-		ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
+		//ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
 		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
-		ctx.strokeText("Population: "+walker.population,10, canvas.height-40);
+		ctx.strokeText("Population: "+walker.population,10, canvas.height-60);
 		if(walker.resistance.key) 
 			if(walker.resistance.damage>walker.resistAmount)
 				ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
@@ -349,6 +369,7 @@ function theGame(){
 		}
 		walker = walker.next;
 	}
+
 		
 }
 
@@ -466,8 +487,10 @@ function upgrade(deity){
 }
 function game_health(){
 	//simple increase of city health over time.
-		if(LA.HP>0)LA.HP +=10;
-		if(BOSTON.HP>0)BOSTON.HP+=10;
+	if(_screen == play_game){
+		if(LA.population>0)LA.population +=10;
+		if(BOSTON.population>0)BOSTON.population+=10;
+	}
 }
 main();
 setInterval(game_loop, 30);
