@@ -354,11 +354,6 @@ function theGame(){
 	{
 		if(walker.population<=0){walker = walker.next; continue;}
 		ctx.drawImage(city,walker.posX-50, walker.posY-50, 100, 100);
-	//	ctx.beginPath();
-	//	ctx.fillStyle = walker.color;
-	//	ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
-		//ctx.fill();
-	//	ctx.stroke();
 		walker = walker.next;
 	}
 	walker = inGameCityList.head;
