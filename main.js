@@ -16,6 +16,10 @@ settings_image = "Gear_Icon.png",
 	/*game stuff*/
 game_background_image = "game_bkgrnd_water.jpg",
 pause_button_image = "pause_button.png",
+landmass_image = "isometric_house.png",
+earth_image = "earthicon.png",
+rain_image = "rainicon.png",
+wind_image = "windicon.png",
 	/*settings*/
 settings_background_image = "tsunami.jpg",
 //Numbers correspond to _screen
@@ -29,15 +33,15 @@ Key_M = 77, Key_K = 75,
 //bools
 musicOn = true, soundFX = true, showGod = false;
 
-
+main();
 //deity nodes
 var deity = null;
-var SHIVA = {key: "SHIVA", damage: 1500, next: null, posX: 600, posY: 300, color: '#00CCFF'};
-var IFRIT = {key: "IFRIT", damage: 1500, next: SHIVA, posX: 600, posY: 200, color: '#FF6600'};
-var TITAN = {key: "TITAN", damage: 1500, next: IFRIT, posX: 600, posY: 100, color: '#996633'};
+var TITAN = {key: "Titan", damage: 1500, next: null, posX: 600, posY: 300, color: earth};
+var IFRIT = {key: "Leviathan", damage: 1500, next: TITAN, posX: 600, posY: 200, color: rain};
+var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 600, posY: 100, color: wind};
 
 //deity list
-var deityList = {head: TITAN, tail: SHIVA, length: 3};
+var deityList = {head: SHIVA, tail: TITAN, length: 3};
 
 //city nodes
 var LA = {key: "LA", population: 100000, next: null,  posX: 100, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
@@ -297,7 +301,8 @@ function theGame(){
 	{
 		ctx.fillStyle = walker.color;
 		// ctx.lineWidth = "5";
-		ctx.fillRect(walker.posX, walker.posY, 180, 80);
+		ctx.drawImage(walker.color, walker.posX, walker.posY, 180, 80);
+		//ctx.fillRect(walker.posX, walker.posY, 180, 80);
 		ctx.strokeText(walker.key+" ("+(i+1)+")", walker.posX+75, walker.posY+40)
 		walker = walker.next;
 		
@@ -333,7 +338,8 @@ function theGame(){
 			//fill box with stats.
 			ctx.fillStyle="white"; //might want to replace with a nice image
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-			ctx.strokeText("Damage: "+walker.damage,10, canvas.height-80);
+			ctx.strokeText(walker.key,10, canvas.height-80);
+			ctx.strokeText("Damage: "+walker.damage,10, canvas.height-60);
 		}
 
 		walker = walker.next;
@@ -345,11 +351,12 @@ function theGame(){
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
 		if(walker.population<=0){walker = walker.next; continue;}
-		ctx.beginPath();
-		ctx.fillStyle = walker.color;
-		ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
-		ctx.fill();
-		ctx.stroke();
+		ctx.drawImage(landmass,walker.posX-50, walker.posY-50, 100, 100);
+	//	ctx.beginPath();
+	//	ctx.fillStyle = walker.color;
+	//	ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
+		//ctx.fill();
+	//	ctx.stroke();
 		walker = walker.next;
 	}
 	walker = inGameCityList.head;
@@ -461,6 +468,16 @@ function loadImages(){
 	//load the title iage
 	gaias_revenge_title = new Image();
 	gaias_revenge_title.src = gaias_revenge_title_image;
+	//load landmass
+	landmass = new Image();
+	landmass.src = landmass_image;
+	//load God Art
+	wind = new Image();
+	wind.src = wind_image;
+	rain = new Image();
+	rain.src = rain_image;
+	earth = new Image();
+	earth.src = earth_image;
 /*	//load the test coin
 	coin = new Image();
 	coin.src = coin_image;
@@ -492,7 +509,7 @@ function game_health(){
 		if(BOSTON.population>0)BOSTON.population+=10;
 	}
 }
-main();
+
 setInterval(game_loop, 30);
 setInterval(game_health, 500);
 
