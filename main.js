@@ -16,7 +16,8 @@ settings_image = "Gear_Icon.png",
 	/*game stuff*/
 game_background_image = "game_bkgrnd_water.jpg",
 pause_button_image = "pause_button.png",
-landmass_image = "isometric_house.png",
+landmass_image = "landmass.png";
+city_image = "city.png",
 earth_image = "earthicon.png",
 rain_image = "rainicon.png",
 wind_image = "windicon.png",
@@ -44,7 +45,7 @@ var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 600, posY: 100, col
 var deityList = {head: SHIVA, tail: TITAN, length: 3};
 
 //city nodes
-var LA = {key: "LA", population: 100000, next: null,  posX: 100, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
+var LA = {key: "LA", population: 100000, next: null,  posX: 300, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
 var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
 
 //cityList
@@ -293,6 +294,7 @@ function theGame(){
 	showGod = false;
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
+	ctx.drawImage(landmass, 20, 50);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
 	
 	var walker = deityList.head;
@@ -303,7 +305,7 @@ function theGame(){
 		// ctx.lineWidth = "5";
 		ctx.drawImage(walker.color, walker.posX, walker.posY, 180, 80);
 		//ctx.fillRect(walker.posX, walker.posY, 180, 80);
-		ctx.strokeText(walker.key+" ("+(i+1)+")", walker.posX+75, walker.posY+40)
+		//ctx.strokeText(walker.key+ " (" + (i+1) + ")", walker.posX+75, walker.posY+40)
 		walker = walker.next;
 		
 		if(deity != null)
@@ -313,13 +315,13 @@ function theGame(){
 			ctx.lineWidth = "5";
 			switch(deity.key)
 			{
-				case "SHIVA":
+				case SHIVA.key:
 					ctx.rect(SHIVA.posX, SHIVA.posY, 180, 80);
 					break;
-				case "TITAN":
+				case TITAN.key:
 					ctx.rect(TITAN.posX, TITAN.posY, 180, 80);
 					break;
-				case "IFRIT":
+				case IFRIT.key:
 					ctx.rect(IFRIT.posX, IFRIT.posY, 180, 80);
 					break;
 			}
@@ -351,7 +353,7 @@ function theGame(){
 	for(var i = 0; i<inGameCityList.length; i++)
 	{
 		if(walker.population<=0){walker = walker.next; continue;}
-		ctx.drawImage(landmass,walker.posX-50, walker.posY-50, 100, 100);
+		ctx.drawImage(city,walker.posX-50, walker.posY-50, 100, 100);
 	//	ctx.beginPath();
 	//	ctx.fillStyle = walker.color;
 	//	ctx.arc(walker.posX, walker.posY, 50, 0, 2*Math.PI);
@@ -468,9 +470,12 @@ function loadImages(){
 	//load the title iage
 	gaias_revenge_title = new Image();
 	gaias_revenge_title.src = gaias_revenge_title_image;
-	//load landmass
+	//load the landmass
 	landmass = new Image();
 	landmass.src = landmass_image;
+	//load city
+	city = new Image();
+	city.src = city_image;
 	//load God Art
 	wind = new Image();
 	wind.src = wind_image;
