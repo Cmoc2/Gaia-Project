@@ -442,32 +442,30 @@ function displayGods(){
 			switch(deity.key)
 			{
 				case SHIVA.key:
-     // ctx.rect(SHIVA.posX, SHIVA.posY, 250, 80);
-     ctx.moveTo(SHIVA.posX+50, SHIVA.posY);
-     ctx.lineTo(SHIVA.posX+250, SHIVA.posY);
-     ctx.lineTo(SHIVA.posX+250, SHIVA.posY+80);
-     ctx.lineTo(SHIVA.posX+55, SHIVA.posY+80);
-     ctx.lineTo(SHIVA.posX, SHIVA.posY);
-     ctx.lineTo(SHIVA.posX+50, SHIVA.posY);
-     break;
-    case TITAN.key:
-     // ctx.rect(TITAN.posX, TITAN.posY, 250, 80);
-     ctx.moveTo(TITAN.posX+50, TITAN.posY);
-     ctx.lineTo(TITAN.posX+250, TITAN.posY);
-     ctx.lineTo(TITAN.posX+250, TITAN.posY+80);
-     ctx.lineTo(TITAN.posX+55, TITAN.posY+80);
-     ctx.lineTo(TITAN.posX, TITAN.posY);
-     ctx.lineTo(TITAN.posX+50, TITAN.posY);
-     break;
-    case IFRIT.key:
-     // ctx.rect(IFRIT.posX, IFRIT.posY, 250, 80);
-     ctx.moveTo(IFRIT.posX+50, IFRIT.posY);
-     ctx.lineTo(IFRIT.posX+250, IFRIT.posY);
-     ctx.lineTo(IFRIT.posX+250, IFRIT.posY+80);
-     ctx.lineTo(IFRIT.posX+55, IFRIT.posY+80);
-     ctx.lineTo(IFRIT.posX, IFRIT.posY);
-     ctx.lineTo(IFRIT.posX+50, IFRIT.posY);
-     break;
+					ctx.moveTo(SHIVA.posX+50, SHIVA.posY);
+				    ctx.lineTo(SHIVA.posX+250, SHIVA.posY);
+				    ctx.lineTo(SHIVA.posX+250, SHIVA.posY+80);
+				    ctx.lineTo(SHIVA.posX+55, SHIVA.posY+80);
+				    ctx.lineTo(SHIVA.posX, SHIVA.posY);
+				    ctx.lineTo(SHIVA.posX+50, SHIVA.posY);
+					break;
+				case TITAN.key:
+					ctx.moveTo(TITAN.posX+50, TITAN.posY);
+				    ctx.lineTo(TITAN.posX+250, TITAN.posY);
+				    ctx.lineTo(TITAN.posX+250, TITAN.posY+80);
+				    ctx.lineTo(TITAN.posX+55, TITAN.posY+80);
+				    ctx.lineTo(TITAN.posX, TITAN.posY);
+				    ctx.lineTo(TITAN.posX+50, TITAN.posY);
+					break;
+				case IFRIT.key:
+					ctx.moveTo(IFRIT.posX+50, IFRIT.posY);
+				    ctx.lineTo(IFRIT.posX+250, IFRIT.posY);
+				    ctx.lineTo(IFRIT.posX+250, IFRIT.posY+80);
+				    ctx.lineTo(IFRIT.posX+55, IFRIT.posY+80);
+				    ctx.lineTo(IFRIT.posX, IFRIT.posY);
+				    ctx.lineTo(IFRIT.posX+50, IFRIT.posY);
+					break;
+
 			}
 			ctx.stroke();
 			ctx.lineWidth = "1";
@@ -547,5 +545,4 @@ function game_health(){
 
 setInterval(game_loop, 30);
 setInterval(game_health, 500);
-
 
