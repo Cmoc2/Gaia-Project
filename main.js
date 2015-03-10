@@ -1,5 +1,5 @@
 var settings, play_music, main_background, evt, timer = 300, framecount = 0,
-level = 1,
+level = 1,highscore = [0,0,0],
 //sounds
 track, button_sound,
 //objects
@@ -27,7 +27,7 @@ wind_image = "windicon.png",
 settings_background_image = "tsunami.jpg",
 //Numbers correspond to _screen
 main_menu = 1, settings = 2, play_game = 3, how_to_play = 4, 
-pause_menu = 5, upgrade_screen = 6,
+pause_menu = 5, upgrade_screen = 6, gameOver_screen = 7,
 //KeyCodes
 Key_Space = 32, Key_Esc = 27,
 Key_1 = 49, Key_2 = 50, Key_3 = 51, Key_4 = 52,
@@ -97,7 +97,6 @@ function initiateInGameCityList(){
 		z.population = z.resetPopulation
 		z.resistance = 0;
 	}
-	
 }
 
 function clickLocation(evt){
@@ -107,6 +106,8 @@ function clickLocation(evt){
 			if( mousePos.x >=canvas.width/2-50 && mousePos.x<=canvas.width/2-50 + play_button.width
 				 && mousePos.y >= canvas.height/2 && mousePos.y <= canvas.height/2 + play_button.height){
 			init();
+			//reset Icecap hp
+			ICECAP.population = ICECAP.maxPop;
 			initiateInGameCityList();
 			if(soundFX == true) button_sound.play();
 			_screen = play_game;
@@ -225,7 +226,11 @@ function clickLocation(evt){
 					_screen = play_game;
 				}
 			}
-			
+			break;
+		case gameOver_screen:
+		if(mousePos.x>320&&mousePos.x<320+80&& mousePos.y>275 && mousePos.y<275+10){
+			_screen = main_menu;
+		}
 		default:
 	}
 }
@@ -306,6 +311,7 @@ function update(){
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
 		else
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
+		if(99+percentage<=0)_screen = gameOver_screen;
 	}
 }
 
@@ -316,6 +322,7 @@ function draw(){
 	if(_screen == how_to_play) how_to_play_page();
 	if(_screen == pause_menu) pauseMenu();
 	if(_screen == upgrade_screen) upgradeScreen();
+	if(_screen == gameOver_screen) gameOver();
 }
 
 function game_loop(){
@@ -326,6 +333,7 @@ function game_loop(){
 function init(){
 	deity = null;
 	timer = 0;
+	percentage = 0.0;
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
@@ -606,6 +614,23 @@ function upgradeScreen(){
 }
 function upgrade(deity){
 	deity.damage *=1.5;
+}
+function gameOver(){
+	//show high scores.
+	var grd=ctx.createLinearGradient(300,200,500,475);
+	grd.addColorStop(0,"black");
+	grd.addColorStop("0.5","white");
+	grd.addColorStop(1,"black");
+	ctx.fillStyle=grd;
+	ctx.fillRect(310,200,180,40*3); 
+	/*
+	 * Fix! if timer > highscore, replace it.
+	 for(var i =0; i<highscore.length; i++){
+		if(timer>highscore[i]){ highscore[i] = timer; continue;}
+		ctx.strokeText((i+1)+". "+highscore[i], 320, 220+i*20);
+	}*/
+	ctx.strokeText("Return to Menu", 320, 280);
+	
 }
 function checkDestroyed(){
 	//show upgrade screen if all cities are destroyed
