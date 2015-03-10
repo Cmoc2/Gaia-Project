@@ -1,4 +1,5 @@
 var settings, play_music, main_background, evt, timer = 300, framecount = 0,
+level = 1,
 //sounds
 track, button_sound,
 //objects
@@ -26,7 +27,7 @@ wind_image = "windicon.png",
 settings_background_image = "tsunami.jpg",
 //Numbers correspond to _screen
 main_menu = 1, settings = 2, play_game = 3, how_to_play = 4, 
-pause_menu = 5,
+pause_menu = 5, upgrade_screen = 6,
 //KeyCodes
 Key_Space = 32, Key_Esc = 27,
 Key_1 = 49, Key_2 = 50, Key_3 = 51, Key_4 = 52,
@@ -215,6 +216,14 @@ function clickLocation(evt){
 			}
 			if(soundFX == true) button_sound.play();
 			break;
+		case upgrade_screen:
+			for(var i = deityList.head; i != null ; i = i.next){
+				//upgrade damage when clicked
+				if(mousePos.x >= i.posX && mousePos.x <= i.posX+180 && mousePos.y >= i.posY && mousePos.y <= i.posY+80){
+					upgrade(i);
+					_screen = play_game;
+				}
+			}
 			
 		default:
 	}
@@ -254,6 +263,8 @@ function keyboardAction(evt){
 				else{ track.play(); musicOn = !musicOn;}
 			break;
 		case Key_K:
+			level +=1;
+			_screen = upgrade_screen;
 			break;
 		case Key_Esc:
 			if(_screen == pause_menu) _screen = play_game;
@@ -305,6 +316,7 @@ function draw(){
 	if(_screen == settings) settingsPage();
 	if(_screen == how_to_play) how_to_play_page();
 	if(_screen == pause_menu) pauseMenu();
+	if(_screen == upgrade_screen) upgradeScreen();
 }
 
 function game_loop(){
@@ -520,7 +532,7 @@ function drawCities(){
 function deityHover(){
 	for(var i = deityList.head; i != null ; i = i.next)
 	{
-		if(mousePos.x >= i.posX && mousePos.x <= i.posX+180 && mousePos.y >= i.posY && mousePos.y <= i.posY+80)
+		if(mousePos.x >= i.posX && mousePos.x <= i.posX+250 && mousePos.y >= i.posY && mousePos.y <= i.posY+80)
 		{
 			showGod = true;
 			//fill box with stats.
@@ -566,6 +578,30 @@ function codetoMakecoinRotate(){
 		if(coinFrame>9) coinFrame=0;
 } */
 
+function upgradeScreen(){
+	//box background
+	var grd=ctx.createLinearGradient(300,200,500,475);
+	grd.addColorStop(0,"black");
+	grd.addColorStop("0.5","white");
+	grd.addColorStop(1,"black");
+	ctx.fillStyle=grd;
+	ctx.fillRect(310,200,180,20+40*3); 
+	ctx.strokeText("Level "+(level-1)+" complete!", 320, 220);
+	ctx.strokeText("More Cities are being built !", 320, 240);
+	ctx.strokeText("Choose a god to upgrade:", 320,260);
+	//showStats
+	for(i=deityList.head; i!= null;i=i.next){
+		if(mousePos.x >= i.posX && mousePos.x <= i.posX+180 && mousePos.y >= i.posY && mousePos.y <= i.posY+80){
+				
+				
+			ctx.fillStyle="white"; //might want to replace with a nice image
+			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+			ctx.strokeText(i.key,10, canvas.height-80);
+			ctx.strokeText("Damage: "+i.damage,10, canvas.height-60);
+		}
+	}
+
+}
 function upgrade(deity){
 	deity.damage *=1.5;
 }
