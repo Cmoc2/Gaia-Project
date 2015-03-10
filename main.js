@@ -273,8 +273,11 @@ function update(){
 	{	
 		//timer.
 		framecount +=1;
-		if(framecount%20==0) timer -=1;
-		ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
+		if(framecount%20==0) timer +=1;
+		if(timer%60 < 10)
+			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
+		else
+			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
 	}
 }
 
