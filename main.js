@@ -533,20 +533,22 @@ function deityHover(){
 }
 
 function cityHover(){
-	for(var i=inGameCityList.head; i!=null; i=i.next){
+	walker = inGameCityList.head;
+	for(var i=0; i<inGameCityList.length; i++){
 		/*hovering over functioning city*/
-		if(i.population > 0 && Math.sqrt((mousePos.x - i.posX)*(mousePos.x - i.posX) + (mousePos.y - i.posY)*(mousePos.y - i.posY)) < 50){
+		if(walker.population > 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
 		//fill box with stats.
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
 		//ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
-		ctx.strokeText("City Name: "+i.key,10, canvas.height-80);
-		ctx.strokeText("Population: "+i.population,10, canvas.height-60);
-		if(i.resistance.key) 
-			if(i.resistance.damage>i.resistAmount)
-				ctx.strokeText("Building Resistance to: "+ i.resistance.key, 10, canvas.height-20);
-				else ctx.strokeText("Fully Resistant to: "+ i.resistance.key, 10, canvas.height-20);
+		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
+		ctx.strokeText("Population: "+walker.population,10, canvas.height-60);
+		if(walker.resistance.key) 
+			if(walker.resistance.damage>walker.resistAmount)
+				ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
+				else ctx.strokeText("Fully Resistant to: "+ walker.resistance.key, 10, canvas.height-20);
 		}
+		walker = walker.next;
 	}
 }
 function isOn(bool){
