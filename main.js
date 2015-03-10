@@ -296,6 +296,7 @@ function theGame(){
 	ctx.drawImage(landmass, 20, 50);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
 	
+<<<<<<< HEAD
 	var walker = deityList.head;
 	//Displays Gods on the right side.
 	for(var i = 0; i<deityList.length; i++)
@@ -351,49 +352,13 @@ function theGame(){
 		}
 	}
 	//hovering for deities
-	walker = deityList.head;
-	for(var i = 0; i<deityList.length; i++)
-	{
-		if(mousePos.x >= walker.posX && mousePos.x <= walker.posX+180 && mousePos.y >= walker.posY && mousePos.y <= walker.posY+80)
-		{
-			showGod = true;
-			//fill box with stats.
-			ctx.fillStyle="white"; //might want to replace with a nice image
-			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-			ctx.strokeText(walker.key,10, canvas.height-80);
-			ctx.strokeText("Damage: "+walker.damage,10, canvas.height-60);
-		}
-
-		walker = walker.next;
-	}
+	deityHover();
 	
-	ctx.strokeStyle = "black";
-	ctx.lineWidth = "1";
-	walker = inGameCityList.head;
-	for(var i = 0; i<inGameCityList.length; i++)
-	{
-		if(walker.population<=0){walker = walker.next; continue;}
-		ctx.drawImage(city,walker.posX-50, walker.posY-50, 100, 100);
-		walker = walker.next;
-	}
-	walker = inGameCityList.head;
-	for(var i=0; i<inGameCityList.length; i++){
-		/*hovering over functioning city*/
-		if(walker.population > 0 && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
-		//fill box with stats.
-		ctx.fillStyle="white"; //might want to replace with a nice image
-		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
-		//ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
-		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
-		ctx.strokeText("Population: "+walker.population,10, canvas.height-60);
-		if(walker.resistance.key) 
-			if(walker.resistance.damage>walker.resistAmount)
-				ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
-				else ctx.strokeText("Fully Resistant to: "+ walker.resistance.key, 10, canvas.height-20);
-		}
-		walker = walker.next;
-	}
-
+	//draw remaining cities
+	drawCities();
+	
+	/*hovering over functioning city */
+	cityHover();
 		
 }
 
@@ -504,6 +469,86 @@ function loadImages(){
 */
 }
 
+function displayGods(){
+	walker = deityList.head;
+	//Displays Gods on the right side.
+	for(var i = 0; i<deityList.length; i++)
+	{
+		ctx.fillStyle = walker.color;
+		// ctx.lineWidth = "5";
+		ctx.drawImage(walker.color, walker.posX, walker.posY, 250, 80);
+		//ctx.fillRect(walker.posX, walker.posY, 180, 80);
+		//ctx.strokeText(walker.key+ " (" + (i+1) + ")", walker.posX+75, walker.posY+40)
+		walker = walker.next;
+		
+		//Display Red border on chosen God.
+		if(deity != null)
+		{
+			ctx.strokeText("Deity Selected: " + deity.key, 1,10);
+			ctx.strokeStyle = "red";
+			ctx.lineWidth = "5";
+			switch(deity.key)
+			{
+				case SHIVA.key:
+					ctx.rect(SHIVA.posX, SHIVA.posY, 250, 80);
+					break;
+				case TITAN.key:
+					ctx.rect(TITAN.posX, TITAN.posY, 250, 80);
+					break;
+				case IFRIT.key:
+					ctx.rect(IFRIT.posX, IFRIT.posY, 250, 80);
+					break;
+			}
+			ctx.stroke();
+			ctx.lineWidth = "1";
+			ctx.strokeStyle = "black";
+		}
+	}
+}
+
+function drawCities(){
+	ctx.strokeStyle = "black";
+	ctx.lineWidth = "1";
+	walker = inGameCityList.head;
+	for(var i = 0; i<inGameCityList.length; i++)
+	{
+		if(walker.population<=0){walker = walker.next; continue;}
+		ctx.drawImage(city,walker.posX-50, walker.posY-50, 100, 100);
+		walker = walker.next;
+	}
+}
+function deityHover(){
+	for(var i = deityList.head; i != null ; i = i.next)
+	{
+		if(mousePos.x >= i.posX && mousePos.x <= i.posX+180 && mousePos.y >= i.posY && mousePos.y <= i.posY+80)
+		{
+			showGod = true;
+			//fill box with stats.
+			ctx.fillStyle="white"; //might want to replace with a nice image
+			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+			ctx.strokeText(i.key,10, canvas.height-80);
+			ctx.strokeText("Damage: "+i.damage,10, canvas.height-60);
+		}
+	}
+}
+
+function cityHover(){
+	for(var i=inGameCityList.head; i!=null; i=i.next){
+		/*hovering over functioning city*/
+		if(i.population > 0 && Math.sqrt((mousePos.x - i.posX)*(mousePos.x - i.posX) + (mousePos.y - i.posY)*(mousePos.y - i.posY)) < 50){
+		//fill box with stats.
+		ctx.fillStyle="white"; //might want to replace with a nice image
+		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+		//ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
+		ctx.strokeText("City Name: "+i.key,10, canvas.height-80);
+		ctx.strokeText("Population: "+i.population,10, canvas.height-60);
+		if(i.resistance.key) 
+			if(i.resistance.damage>i.resistAmount)
+				ctx.strokeText("Building Resistance to: "+ i.resistance.key, 10, canvas.height-20);
+				else ctx.strokeText("Fully Resistant to: "+ i.resistance.key, 10, canvas.height-20);
+		}
+	}
+}
 function isOn(bool){
 	if(bool) return "on"; else return "off"	;
 }
