@@ -457,7 +457,7 @@ function displayGods(){
 		}
 	}
 }
-
+//edit
 function drawCities(){
 	ctx.strokeStyle = "black";
 	ctx.lineWidth = "1";
