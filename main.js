@@ -27,7 +27,7 @@ settings_background_image = "tsunami.jpg",
 main_menu = 1, settings = 2, play_game = 3, how_to_play = 4, 
 pause_menu = 5,
 //KeyCodes
-Key_Space = 32,
+Key_Space = 32, Key_Esc = 27,
 Key_1 = 49, Key_2 = 50, Key_3 = 51, Key_4 = 52,
 Key_M = 77, Key_K = 75,
 
@@ -248,6 +248,10 @@ function keyboardAction(evt){
 			break;
 		case Key_K:
 			break;
+		case Key_Esc:
+			if(_screen == pause_menu) _screen = play_game;
+				else if(_screen == play_game) _screen = pause_menu;
+			break;
 		default:
 	}
 }
@@ -266,8 +270,6 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
-		//displays diety name on top left corner so player knows
-		//which diety is currently selected. Waiting for borders.
 
 	}
 }
