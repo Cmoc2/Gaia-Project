@@ -221,6 +221,7 @@ function clickLocation(evt){
 				//upgrade damage when clicked
 				if(mousePos.x >= i.posX && mousePos.x <= i.posX+180 && mousePos.y >= i.posY && mousePos.y <= i.posY+80){
 					upgrade(i);
+					initiateInGameCityList();
 					_screen = play_game;
 				}
 			}
@@ -263,8 +264,6 @@ function keyboardAction(evt){
 				else{ track.play(); musicOn = !musicOn;}
 			break;
 		case Key_K:
-			level +=1;
-			_screen = upgrade_screen;
 			break;
 		case Key_Esc:
 			if(_screen == pause_menu) _screen = play_game;
@@ -349,7 +348,8 @@ function theGame(){
 	/*hovering over functioning city */
 	cityHover();
 
-		
+	//check if all the cities have been destroyed
+	checkDestroyed();
 }
 
 function menu(){
@@ -585,10 +585,12 @@ function upgradeScreen(){
 	grd.addColorStop("0.5","white");
 	grd.addColorStop(1,"black");
 	ctx.fillStyle=grd;
-	ctx.fillRect(310,200,180,20+40*3); 
+	ctx.fillRect(310,200,180,40*3); 
 	ctx.strokeText("Level "+(level-1)+" complete!", 320, 220);
 	ctx.strokeText("More Cities are being built !", 320, 240);
 	ctx.strokeText("Choose a god to upgrade:", 320,260);
+	ctx.strokeText("Note: Upgrading a god will", 320, 280);
+	ctx.strokeText("start the next level.", 320, 300);
 	//showStats
 	for(i=deityList.head; i!= null;i=i.next){
 		if(mousePos.x >= i.posX && mousePos.x <= i.posX+180 && mousePos.y >= i.posY && mousePos.y <= i.posY+80){
@@ -604,6 +606,27 @@ function upgradeScreen(){
 }
 function upgrade(deity){
 	deity.damage *=1.5;
+}
+function checkDestroyed(){
+	//show upgrade screen if all cities are destroyed
+	var destroyed = 0;
+	for(i = inGameCityList.head;i!=null;i=i.next){
+		if(i.population<=0)destroyed+=1;
+	}
+	if(destroyed == inGameCityList.length){
+			level +=1;
+			//show timer stuff.
+	ctx.strokeText((99+percentage)+"%", 25,30);
+		if(timer%60 < 10)
+			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
+		else
+			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
+			/* It is being placed here so the text won't
+			be written with every update,
+			preventing it from getting blurry*/
+			                     
+			 _screen = upgrade_screen;
+	}
 }
 function game_health(){
 	//simple increase of city health over time.
