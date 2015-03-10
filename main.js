@@ -1,4 +1,4 @@
-var settings, play_music, main_background, evt,
+var settings, play_music, main_background, evt, timer = 300, framecount = 0,
 //sounds
 track, button_sound,
 //objects
@@ -17,6 +17,7 @@ settings_image = "Gear_Icon.png",
 game_background_image = "game_bkgrnd_water.jpg",
 pause_button_image = "pause_button.png",
 landmass_image = "landmass.png";
+icecap_image = "icecap.png";
 city_image = "city.png",
 earth_image = "earthicon.png",
 rain_image = "rainicon.png",
@@ -270,7 +271,10 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
-
+		//timer.
+		framecount +=1;
+		if(framecount%20==0) timer -=1;
+		ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
 	}
 }
 
@@ -289,6 +293,7 @@ function game_loop(){
 
 function init(){
 	deity = null;
+	timer = 0;
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
@@ -298,7 +303,7 @@ function theGame(){
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(landmass, 20, 50);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
-	
+	showIcecap();
 	//Draw gods on right side
 	displayGods();
 	
@@ -415,12 +420,18 @@ function loadImages(){
 	rain.src = rain_image;
 	earth = new Image();
 	earth.src = earth_image;
+	//load icecap
+	icecap = new Image();
+	icecap.src = icecap_image;
 /*	//load the test coin
 	coin = new Image();
 	coin.src = coin_image;
 */
 }
 
+function showIcecap(){
+	ctx.drawImage(icecap,0,0,100,50);
+}
 function displayGods(){
 	walker = deityList.head;
 	//Displays Gods on the right side.
@@ -543,6 +554,6 @@ function game_health(){
 	}
 }
 
-setInterval(game_loop, 30);
+setInterval(game_loop, 50);
 setInterval(game_health, 500);
 
