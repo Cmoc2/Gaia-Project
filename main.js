@@ -37,9 +37,9 @@ musicOn = true, soundFX = true, showGod = false;
 main();
 //deity nodes
 var deity = null;
-var TITAN = {key: "Titan", damage: 1500, next: null, posX: 600, posY: 300, color: earth};
-var IFRIT = {key: "Leviathan", damage: 1500, next: TITAN, posX: 600, posY: 200, color: rain};
-var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 600, posY: 100, color: wind};
+var TITAN = {key: "Titan", damage: 1500, next: null, posX: 530, posY: 300, color: earth};
+var IFRIT = {key: "Leviathan", damage: 1500, next: TITAN, posX: 530, posY: 200, color: rain};
+var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 530, posY: 100, color: wind};
 
 //deity list
 var deityList = {head: SHIVA, tail: TITAN, length: 3};
@@ -225,7 +225,7 @@ function keyboardAction(evt){
 		case Key_1:
 			if(_screen == play_game){
 				console.log("Action 1:Titan");
-				deity = TITAN;}
+				deity = SHIVA;}
 			break;
 		case Key_2:
 			if(_screen == play_game){
@@ -236,7 +236,7 @@ function keyboardAction(evt){
 		case Key_3:
 			if(_screen == play_game){
 				console.log("Action 3: Shiva");
-				deity = SHIVA;
+				deity = TITAN;
 			} 
 			break;
 		case Key_4:
@@ -303,7 +303,7 @@ function theGame(){
 	{
 		ctx.fillStyle = walker.color;
 		// ctx.lineWidth = "5";
-		ctx.drawImage(walker.color, walker.posX, walker.posY, 180, 80);
+		ctx.drawImage(walker.color, walker.posX, walker.posY, 250, 80);
 		//ctx.fillRect(walker.posX, walker.posY, 180, 80);
 		//ctx.strokeText(walker.key+ " (" + (i+1) + ")", walker.posX+75, walker.posY+40)
 		walker = walker.next;
@@ -316,13 +316,13 @@ function theGame(){
 			switch(deity.key)
 			{
 				case SHIVA.key:
-					ctx.rect(SHIVA.posX, SHIVA.posY, 180, 80);
+					ctx.rect(SHIVA.posX, SHIVA.posY, 250, 80);
 					break;
 				case TITAN.key:
-					ctx.rect(TITAN.posX, TITAN.posY, 180, 80);
+					ctx.rect(TITAN.posX, TITAN.posY, 250, 80);
 					break;
 				case IFRIT.key:
-					ctx.rect(IFRIT.posX, IFRIT.posY, 180, 80);
+					ctx.rect(IFRIT.posX, IFRIT.posY, 250, 80);
 					break;
 			}
 			ctx.stroke();
