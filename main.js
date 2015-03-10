@@ -58,6 +58,9 @@ var cityList = {head: BOSTON, tail: LA, length: 2};
 //inGameCityList
 var inGameCityList = {head:null, tail: null, length: 0};
 
+		var percentage = 0.0;
+		
+		
 function main(){
 	//Set up the canvas.
 	canvas = document.getElementById("myCanvas");
@@ -274,11 +277,21 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
-		
-		
+		var sum = 0;
 		//timer.
 		framecount +=1;
-		if(framecount%20==0) timer +=1;
+		if(framecount%20==0)
+		{
+			for(var walker = inGameCityList.head; walker != null; walker = walker.next)
+			{
+				if(walker.population > 0)
+					sum = 2*(sum + walker.population);
+			}
+			ICECAP.population = ICECAP.population - sum;
+			percentage = ICECAP.population/ICECAP.maxPop
+			timer +=1;
+		} 
+		ctx.strokeText((99+percentage)+"%", 25,30);
 		if(timer%60 < 10)
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
 		else
