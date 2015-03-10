@@ -224,18 +224,15 @@ function keyboardAction(evt){
 			break;
 		case Key_1:
 			if(_screen == play_game){
-				console.log("Action 1:Titan");
 				deity = SHIVA;}
 			break;
 		case Key_2:
 			if(_screen == play_game){
-				console.log("Action 2: Ifrit");
 				deity = IFRIT;
 			} 
 			break;
 		case Key_3:
 			if(_screen == play_game){
-				console.log("Action 3: Shiva");
 				deity = TITAN;
 			} 
 			break;
@@ -312,21 +309,42 @@ function theGame(){
 		
 		if(deity != null)
 		{
+					ctx.beginPath();
 			ctx.strokeText("Deity Selected: " + deity.key, 1,10);
 			ctx.strokeStyle = "red";
 			ctx.lineWidth = "5";
+			ctx.beginPath();
 			switch(deity.key)
 			{
 				case SHIVA.key:
-					ctx.rect(SHIVA.posX, SHIVA.posY, 250, 80);
+					// ctx.rect(SHIVA.posX, SHIVA.posY, 250, 80);
+					ctx.moveTo(SHIVA.posX+50, SHIVA.posY);
+					ctx.lineTo(SHIVA.posX+250, SHIVA.posY);
+					ctx.lineTo(SHIVA.posX+250, SHIVA.posY+80);
+					ctx.lineTo(SHIVA.posX+55, SHIVA.posY+80);
+					ctx.lineTo(SHIVA.posX, SHIVA.posY);
+					ctx.lineTo(SHIVA.posX+50, SHIVA.posY);
 					break;
 				case TITAN.key:
-					ctx.rect(TITAN.posX, TITAN.posY, 250, 80);
+					// ctx.rect(TITAN.posX, TITAN.posY, 250, 80);
+					ctx.moveTo(TITAN.posX+50, TITAN.posY);
+					ctx.lineTo(TITAN.posX+250, TITAN.posY);
+					ctx.lineTo(TITAN.posX+250, TITAN.posY+80);
+					ctx.lineTo(TITAN.posX+55, TITAN.posY+80);
+					ctx.lineTo(TITAN.posX, TITAN.posY);
+					ctx.lineTo(TITAN.posX+50, TITAN.posY);
 					break;
 				case IFRIT.key:
-					ctx.rect(IFRIT.posX, IFRIT.posY, 250, 80);
+					// ctx.rect(IFRIT.posX, IFRIT.posY, 250, 80);
+					ctx.moveTo(IFRIT.posX+50, IFRIT.posY);
+					ctx.lineTo(IFRIT.posX+250, IFRIT.posY);
+					ctx.lineTo(IFRIT.posX+250, IFRIT.posY+80);
+					ctx.lineTo(IFRIT.posX+55, IFRIT.posY+80);
+					ctx.lineTo(IFRIT.posX, IFRIT.posY);
+					ctx.lineTo(IFRIT.posX+50, IFRIT.posY);
 					break;
 			}
+			
 			ctx.stroke();
 			ctx.lineWidth = "1";
 			ctx.strokeStyle = "black";
