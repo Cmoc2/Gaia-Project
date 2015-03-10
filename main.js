@@ -45,6 +45,9 @@ var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 530, posY: 100, col
 //deity list
 var deityList = {head: SHIVA, tail: TITAN, length: 3};
 
+//icecap node
+var ICECAP = {key: "ICECAP", population: 1000000, maxPop: 1000000};
+
 //city nodes
 var LA = {key: "LA", population: 100000, next: null,  posX: 300, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
 var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
@@ -271,6 +274,8 @@ function update(){
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
 	{	
+		
+		
 		//timer.
 		framecount +=1;
 		if(framecount%20==0) timer +=1;
@@ -304,7 +309,7 @@ function theGame(){
 	showGod = false;
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
-	ctx.drawImage(landmass, 20, 50);
+	ctx.drawImage(landmass, 0, 0);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
 	showIcecap();
 	//Draw gods on right side
