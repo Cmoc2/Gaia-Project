@@ -252,9 +252,10 @@ function clickLocation(evt){
 			}
 			break;
 		case gameOver_screen:
-		if(mousePos.x>320&&mousePos.x<320+80&& mousePos.y>=220+20*highscore.length-10 && mousePos.y<=220+20*highscore.length){
+			if(mousePos.x>320&&mousePos.x<320+80&& mousePos.y>=220+20*highscore.length-10 && mousePos.y<=220+20*highscore.length){
 			_screen = main_menu;
-		}
+			}
+			break;
 		default:
 	}
 }
@@ -318,36 +319,7 @@ function update(){
 	//if the game is going.
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
-	{	
-		var sum = 0;
-		//timer.
-		framecount +=1;
-		if(framecount%20==0)
-		{
-			for(var walker = inGameCityList.head; walker != null; walker = walker.next)
-			{
-				if(walker.population > 0)
-					sum = 2*(sum + walker.population);
-			}
-			ICECAP.population = ICECAP.population - sum;
-			percentage = ICECAP.population/ICECAP.maxPop
-			timer +=1;
-		} 
-		ctx.strokeText((99+percentage)+"%", 25,30);
-		if(timer%60 < 10)
-			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
-		else
-			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
-		if(99+percentage<=0) gameOver();
-	}
-	if(level==6){
-		alert("Congratulations! You destroyed all the cities!");
-		_screen = main_menu;
-		init();
-		menu();
-		track.load();
-		track.play();
-		
+	{		
 	}
 }
 
@@ -381,7 +353,36 @@ function theGame(){
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
 	ctx.drawImage(landmass, 0, 0);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
+	
+	
 	showIcecap();
+	//Update
+	var sum = 0;
+		//timer.
+		framecount +=1;
+		if(framecount%20==0)
+		{
+			for(var walker = inGameCityList.head; walker != null; walker = walker.next)
+			{
+				if(walker.population > 0)
+					sum = 2*(sum + walker.population);
+			}
+			ICECAP.population = ICECAP.population - sum;
+			percentage = ICECAP.population/ICECAP.maxPop
+			timer +=1;
+		} 
+		ctx.strokeText((99+percentage)+"%", 25,30);
+		if(timer%60 < 10)
+			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
+		else
+			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
+		if(99+percentage<=0){
+			alert("Game Over! Press Ok to go back to Main Menu.");
+			_screen = main_menu;
+			track.load();
+			track.play();
+		}
+	//-----
 	//Draw gods on right side
 	displayGods();
 	
@@ -393,7 +394,11 @@ function theGame(){
 	
 	/*hovering over functioning city */
 	cityHover();
-
+	
+	if(level==6){
+		alert("Congratulations! You destroyed all the cities!");
+		gameOver();
+	} else 
 	//check if all the cities have been destroyed
 	checkDestroyed();
 }
@@ -404,6 +409,12 @@ function menu(){
 	ctx.drawImage(settings_button, canvas.width-50, canvas.height-50, 50, 50);
 	ctx.drawImage(how_to_play_button, 0, canvas.height-31, 235, 31);
 	ctx.drawImage(gaias_revenge_title, canvas.width/2-gaias_revenge_title.width/2,10);
+	//show high score table
+	for(var i = 0; i<highscore.length;i++){
+		if(highscore[i]==null)continue;
+		if(highscore[i]%60<10) ctx.strokeText((i+1)+". "+Math.floor(highscore[i]/60)+":0"+ highscore[i]%60, 10, canvas.height/2-50);
+			else ctx.strokeText((i+1)+". "+ Math.floor(highscore[i]/60)+":"+ highscore[i]%60, 10, canvas.height/2-50);
+	}
 }
 
 function settingsPage(){
