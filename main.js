@@ -312,7 +312,7 @@ function update(){
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
 		else
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
-		if(99+percentage<=97) gameOver();
+		if(99+percentage<=0) gameOver();
 	}
 }
 
