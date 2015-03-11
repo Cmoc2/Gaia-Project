@@ -336,6 +336,16 @@ function update(){
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
 		if(99+percentage<=0) gameOver();
 	}
+	if(level==6){
+		alert("Congratulations! You destroyed all the cities!");
+		alert(">.>");
+		_screen = main_menu;
+		init();
+		menu();
+		track.load();
+		track.play();
+		
+	}
 }
 
 function draw(){
@@ -356,6 +366,7 @@ function init(){
 	deity = null;
 	timer = 0;
 	percentage = 0.0;
+	level = 1;
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
