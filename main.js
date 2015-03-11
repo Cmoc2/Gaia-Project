@@ -53,9 +53,12 @@ var ICECAP = {key: "ICECAP", population: 1000000, maxPop: 1000000};
 //city nodes
 var LA = {key: "LA", population: 100000, next: null,  posX: 300, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
 var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var HOUSTON = {key: "HOUSTON", population: 90000, next: BOSTON, posX: 350, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var SF = {key: "SF", population: 90000, next: HOUSTON, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var VEGAS = {key: "VEGAS", population: 90000, next: SF, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
 
 //cityList
-var cityList = {head: BOSTON, tail: LA, length: 2};
+var cityList = {head: VEGAS, tail: LA, length: 5};
 
 //inGameCityList
 var inGameCityList = {head:null, tail: null, length: 0};
@@ -85,13 +88,31 @@ function main(){
 	track.play();
 }
 function initiateInGameCityList(){
-	var randNum = Math.floor(Math.random()*cityList.length); //random integer from 0-1
-	var walker = cityList.head;
-	for(var i=0; i<randNum; i++)
+	// var randNum = Math.floor(Math.random()*cityList.length); //random integer from 0-1
+	// var walker = cityList.head;
+	// for(var i=0; i<randNum; i++)
+	// {
+		// walker = walker.next;
+	// }
+	switch(level)
 	{
-		walker = walker.next;
+		case 1:
+			inGameCityList = {head: LA, length: 1};
+			break;
+		case 2:
+			inGameCityList = {head: BOSTON, length: 2};
+			break;
+		case 3:
+			inGameCityList = {head: HOUSTON, length: 3};
+			break;
+		case 4:
+			inGameCityList = {head: SF, length: 4};
+			break;
+		case 5:
+			inGameCityList = {head: VEGAS, length: 5};
+			break;
 	}
-	inGameCityList = {head: walker, tail: walker, length: 1};
+	
 	
 	//reset HP & resistance
 	for(var z = cityList.head; z!=null; z = z.next){
@@ -151,7 +172,7 @@ function clickLocation(evt){
 			}
 			break;
 		case play_game:
-			walker = inGameCityList.head;
+			var walker = inGameCityList.head;
 			//check if on cities.
 			for(var i=0; i<inGameCityList.length; i++)
 			{	//if on a city
@@ -170,8 +191,8 @@ function clickLocation(evt){
 						console.log("Destroyed");
 						//remove from node list;
 					}
-				} else deity = null;
-					
+				}// else deity = null;
+				walker = walker.next;
 			}
 			//check if on deity
 			for(var z = deityList.head; z!=null; z = z.next){
