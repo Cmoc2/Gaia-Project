@@ -715,8 +715,20 @@ function checkDestroyed(){
 function game_health(){
 	//simple increase of city health over time.
 	if(_screen == play_game){
-		if(LA.population>0)LA.population +=10;
-		if(BOSTON.population>0)BOSTON.population+=10;
+		switch(level)
+		{
+			case 5:
+				if(VEGAS.population>0)VEGAS.population+=10;
+			case 4:
+				if(SF.population>0)SF.population+=10;
+			case 3:
+				if(HOUSTON.population>0)HOUSTON.population+=10;
+			case 2:
+				if(BOSTON.population>0)BOSTON.population+=10;
+			case 1:
+				if(LA.population>0)LA.population +=10;
+				break;
+		}
 	}
 }
 
