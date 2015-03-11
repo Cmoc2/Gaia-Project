@@ -24,6 +24,9 @@ city_image = "city.png",
 earth_image = "earthicon.png",
 rain_image = "rainicon.png",
 wind_image = "windicon.png",
+rainSprite_image = "rainSprite.png",
+hurricaneSprite_image = "hurricaneSprite.png",
+quakeSprite_image = "quakeSprite.png",
 	/*settings*/
 settings_background_image = "tsunami.jpg",
 //Numbers correspond to _screen
@@ -524,6 +527,13 @@ function loadImages(){
 	icecap.src = icecap_image;
 	tutorial_background = new Image();
 	tutorial_background.src = tutorial_background_image;
+	//load god sprites
+	rainSprite = new Image();
+	rainSprite.src = rainSprite_image;
+	hurricaneSprite = new Image();
+	hurricaneSprite.src = hurricaneSprite_image;
+	quakeSprite = new Image();
+	quakeSprite.src = quakeSprite_image;
 /*	//load the test coin
 	coin = new Image();
 	coin.src = coin_image;
@@ -560,6 +570,7 @@ function displayGods(){
 				    ctx.lineTo(SHIVA.posX+55, SHIVA.posY+80);
 				    ctx.lineTo(SHIVA.posX, SHIVA.posY);
 				    ctx.lineTo(SHIVA.posX+50, SHIVA.posY);
+				    ctx.drawImage(hurricaneSprite,mousePos.x-hurricaneSprite.width/4,mousePos.y-hurricaneSprite.height/4,50,50);
 					break;
 				case TITAN.key:
 					ctx.moveTo(TITAN.posX+50, TITAN.posY);
@@ -568,6 +579,7 @@ function displayGods(){
 				    ctx.lineTo(TITAN.posX+55, TITAN.posY+80);
 				    ctx.lineTo(TITAN.posX, TITAN.posY);
 				    ctx.lineTo(TITAN.posX+50, TITAN.posY);
+				    ctx.drawImage(quakeSprite,mousePos.x-quakeSprite.width/4,mousePos.y-quakeSprite.height/4,50,50);
 					break;
 				case IFRIT.key:
 					ctx.moveTo(IFRIT.posX+50, IFRIT.posY);
@@ -576,6 +588,7 @@ function displayGods(){
 				    ctx.lineTo(IFRIT.posX+55, IFRIT.posY+80);
 				    ctx.lineTo(IFRIT.posX, IFRIT.posY);
 				    ctx.lineTo(IFRIT.posX+50, IFRIT.posY);
+				    ctx.drawImage(rainSprite,mousePos.x-rainSprite.width/4,mousePos.y-rainSprite.height/4,50,50);
 					break;
 
 			}
@@ -745,7 +758,11 @@ function game_health(){
 		}
 	}
 }
-
+function makeImage(imgsrc){
+	img = new Image();
+	img.src = imgsrc;
+	return img;
+}
 setInterval(game_loop, 50);
 setInterval(game_health, 500);
 
