@@ -1,5 +1,5 @@
 var settings, play_music, main_background, evt, timer = 300, framecount = 0,
-level = 1,highscore = [0,0,0],
+level = 1,highscore = new Array(5),
 //sounds
 track, button_sound,
 //objects
@@ -228,7 +228,7 @@ function clickLocation(evt){
 			}
 			break;
 		case gameOver_screen:
-		if(mousePos.x>320&&mousePos.x<320+80&& mousePos.y>275 && mousePos.y<275+10){
+		if(mousePos.x>320&&mousePos.x<320+80&& mousePos.y>=220+20*highscore.length-10 && mousePos.y<=220+20*highscore.length){
 			_screen = main_menu;
 		}
 		default:
@@ -311,7 +311,7 @@ function update(){
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":0"+ timer%60, 1,60);
 		else
 			ctx.strokeText("Time Elapsed " + Math.floor(timer/60)+":"+ timer%60, 1,60);
-		if(99+percentage<=0)_screen = gameOver_screen;
+		if(99+percentage<=97) gameOver();
 	}
 }
 
@@ -322,7 +322,6 @@ function draw(){
 	if(_screen == how_to_play) how_to_play_page();
 	if(_screen == pause_menu) pauseMenu();
 	if(_screen == upgrade_screen) upgradeScreen();
-	if(_screen == gameOver_screen) gameOver();
 }
 
 function game_loop(){
@@ -622,15 +621,28 @@ function gameOver(){
 	grd.addColorStop("0.5","white");
 	grd.addColorStop(1,"black");
 	ctx.fillStyle=grd;
-	ctx.fillRect(310,200,180,40*3); 
-	/*
-	 * Fix! if timer > highscore, replace it.
-	 for(var i =0; i<highscore.length; i++){
-		if(timer>highscore[i]){ highscore[i] = timer; continue;}
-		ctx.strokeText((i+1)+". "+highscore[i], 320, 220+i*20);
-	}*/
-	ctx.strokeText("Return to Menu", 320, 280);
-	
+	ctx.fillRect(310,200,150,20*(highscore.length+2));
+	//updates high score table 
+	for(var i =0; i <highscore.length;i++){
+		if(highscore[i]==null){
+			highscore[i]= timer;
+			break;
+		}
+		if(timer>highscore[i]){
+			highscore.splice(i,0,timer);
+			highscore.pop();
+			break;
+		}
+		
+	}
+	//displays high score table
+	for(var i = 0; i<highscore.length;i++){
+		if(highscore[i]==null)continue;
+		if(highscore[i]%60<10) ctx.strokeText((i+1)+". "+Math.floor(highscore[i]/60)+":0"+ highscore[i]%60,310,220+20*i);
+			else ctx.strokeText((i+1)+". "+ Math.floor(highscore[i]/60)+":"+ highscore[i]%60, 310,220+20*i);
+	}
+	ctx.strokeText("Return to Menu", 320, 220+20*highscore.length);
+	_screen = gameOver_screen;
 }
 function checkDestroyed(){
 	//show upgrade screen if all cities are destroyed
