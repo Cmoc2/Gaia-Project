@@ -382,8 +382,6 @@ function theGame(){
 	ctx.drawImage(landmass, 0, 0);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
 	showIcecap();
-	//Draw gods on right side
-	displayGods();
 	
 	//hovering for deities
 	deityHover();
@@ -396,6 +394,9 @@ function theGame(){
 
 	//check if all the cities have been destroyed
 	checkDestroyed();
+	
+	//Draw gods on right side
+	displayGods();
 }
 
 function menu(){
