@@ -51,17 +51,17 @@ var deityList = {head: SHIVA, tail: TITAN, length: 3};
 var ICECAP = {key: "ICECAP", population: 1000000, maxPop: 1000000};
 
 //city nodes
-var LA = {key: "LA", population: 100000, next: null,  posX: 300, posY: 100, color: '#CC0000', resetPopulation: 100000, resistance: null, resistAmount: 150};
-var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var HOUSTON = {key: "HOUSTON", population: 90000, next: BOSTON, posX: 350, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var SF = {key: "SF", population: 90000, next: HOUSTON, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var VEGAS = {key: "VEGAS", population: 90000, next: SF, posX: 200, posY: 200, color: '#00CC00', resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 100000, next: null,  posX: 300, posY: 100, resetPopulation: 100000, resistance: null, resistAmount: 150};
+var BOSTON = {key: "BOSTON", population: 90000, next: LA, posX: 200, posY: 200, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var HOUSTON = {key: "HOUSTON", population: 90000, next: BOSTON, posX: 350, posY: 200, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var SF = {key: "SF", population: 90000, next: HOUSTON, posX: 150, posY: 400, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var VEGAS = {key: "VEGAS", population: 90000, next: SF, posX: 400, posY: 400, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: VEGAS, tail: LA, length: 5};
 
 //inGameCityList
-var inGameCityList = {head:null, tail: null, length: 0};
+var inGameCityList = {head:null, length: 0};
 
 		var percentage = 0.0;
 		
@@ -176,22 +176,23 @@ function clickLocation(evt){
 			//check if on cities.
 			for(var i=0; i<inGameCityList.length; i++)
 			{	//if on a city
-				if(walker.population<=0) continue;
-				 if(deity != null && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
-					//resistance code.
-					if(walker.resistance == deity){
-						walker.population -= deity.damage-walker.resistAmount>=0?
-									deity.damage-walker.resistAmount:0;
-						walker.resistAmount +=150;
-						}else{
-							walker.resistAmount = 150; 
-							walker.population -=deity.damage;}
-					walker.resistance = deity;
-					if(walker.population<=0){
-						console.log("Destroyed");
-						//remove from node list;
-					}
-				}// else deity = null;
+				if(walker.population > 0){
+					 if(deity != null && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
+						//resistance code.
+						if(walker.resistance == deity){
+							walker.population -= deity.damage-walker.resistAmount>=0?
+										deity.damage-walker.resistAmount:0;
+							walker.resistAmount +=150;
+							}else{
+								walker.resistAmount = 150; 
+								walker.population -=deity.damage;}
+						walker.resistance = deity;
+						if(walker.population<=0){
+							console.log("Destroyed");
+							//remove from node list;
+						}
+					}// else deity = null;
+				}
 				walker = walker.next;
 			}
 			//check if on deity
