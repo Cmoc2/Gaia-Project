@@ -8,6 +8,7 @@ canvas, ctx, _screen, mousePos = {x: 0, y: 0}, walker, //test coinFrame=5, coin_
 back_button_image = "back_button.png",
 cyan_button_image = "cyan_button.png",
 dark_button_image = "dark_button.png",
+tutorial_background_image = "tutorial_background.png"
 	/*menu*/
 gaias_revenge_title_image = "Gaias_Revenge_Title.png";
 play_button_image = "play_button.png",
@@ -379,12 +380,35 @@ function settingsPage(){
 }
 
 function how_to_play_page(){
+	//image object named tutorial_background
 	canvas.width = canvas.width;
-	ctx.fillStyle = "white";
-	ctx.rect(0,0,canvas.width,canvas.height);
+	ctx.drawImage(tutorial_background, 0, 0, canvas.width, canvas.height);
+	ctx.fillStyle="white"; 
+	ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
 	ctx.fill();
-	ctx.strokeText("Tutorial", canvas.width/2, canvas.height/2 - 15);
-	ctx.drawImage(back_button,0, 0, 50, 50); //top left corner
+	ctx.drawImage(back_button,0, 100, 50, 50); //top left corner
+	//ice cap description
+	if(mousePos.x > 0 && mousePos.x < 100 && mousePos.y > 0 && mousePos.y < 100){
+		ctx.strokeText("Ice Caps are melting due to human emissions!", 10, canvas.height-80);
+		ctx.strokeText("If the Ice Cap hits 0% it's game over.", 10, canvas.height-70);
+		//city description
+	} else if(mousePos.x > 250 && mousePos.x < 350 && mousePos.y > 50 && mousePos.y < 150){
+		ctx.strokeText("Here is your target objective.", 10, canvas.height-80);
+		ctx.strokeText("Use the power of the gods to annihilate the human race", 10, canvas.height-70);
+		//Garuda description
+	} else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 100 && mousePos.y < 180){
+		ctx.strokeText("This is Garuda, god of wind.", 10, canvas.height-80);
+		//leviathan description
+	}else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 200 && mousePos.y < 280){
+		ctx.strokeText("This is Leviathan, god of rain.", 10, canvas.height-80);
+		//Titan description
+	}else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 300 && mousePos.y < 380){
+		ctx.strokeText("This is Titan, god of Earth.", 10, canvas.height-80);
+	}
+	//general 
+	else{
+		ctx.strokeText("Mouse over an item to read it's description.",10, canvas.height-80);
+	}
 }
 
 function pauseMenu(){	
@@ -463,6 +487,8 @@ function loadImages(){
 	//load icecap
 	icecap = new Image();
 	icecap.src = icecap_image;
+	tutorial_background = new Image();
+	tutorial_background.src = tutorial_background_image;
 /*	//load the test coin
 	coin = new Image();
 	coin.src = coin_image;
