@@ -1,5 +1,5 @@
 var settings, play_music, main_background, evt, timer = 300, framecount = 0,
-level = 1,highscore = new Array(5),
+level = 1,highscore = new Array(5),resistAmount = 150,
 //sounds
 track, button_sound,
 //objects
@@ -183,17 +183,15 @@ function clickLocation(evt){
 					 if(deity != null && Math.sqrt((mousePos.x - walker.posX)*(mousePos.x - walker.posX) + (mousePos.y - walker.posY)*(mousePos.y - walker.posY)) < 50){
 						//resistance code.
 						if(walker.resistance == deity){
-							walker.population -= deity.damage-walker.resistAmount>=0?
-										deity.damage-walker.resistAmount:0;
-							walker.resistAmount +=150;
+							walker.population -= Math.floor(deity.damage-resistAmount>=0?
+										deity.damage-resistAmount:0);
+							resistAmount +=(deity.damage/2);
 							}else{
-								walker.resistAmount = 150; 
-								walker.population -=deity.damage;}
+								resistAmount -= deity.damage/4; 
+								walker.population -=Math.floor(deity.damage-resistAmount>=0?
+										deity.damage-resistAmount:0);}
 						walker.resistance = deity;
-						if(walker.population<=0){
-							console.log("Destroyed");
-							//remove from node list;
-						}
+						if(resistAmount>deity.damage)resistAmount=deity.damage;
 					}// else deity = null;
 				}
 				walker = walker.next;
@@ -295,6 +293,9 @@ function keyboardAction(evt){
 				else{ track.play(); musicOn = !musicOn;}
 			break;
 		case Key_K:
+			for(var i = cityList.head;i!=null;i=i.next){
+				i.population = 100000;
+			}
 			break;
 		case Key_Esc:
 			if(_screen == pause_menu) _screen = play_game;
@@ -341,7 +342,6 @@ function update(){
 	}
 	if(level==6){
 		alert("Congratulations! You destroyed all the cities!");
-		alert(">.>");
 		_screen = main_menu;
 		init();
 		menu();
@@ -370,6 +370,8 @@ function init(){
 	timer = 0;
 	percentage = 0.0;
 	level = 1;
+	resistAmount = 150;
+	SHIVA.damage = TITAN.damage = IFRIT.damage = 1500;
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
@@ -637,7 +639,7 @@ function cityHover(){
 		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
 		ctx.strokeText("Population: "+walker.population,10, canvas.height-60);
 		if(walker.resistance.key) 
-			if(walker.resistance.damage>walker.resistAmount)
+			if(walker.resistance.damage>resistAmount)
 				ctx.strokeText("Building Resistance to: "+ walker.resistance.key, 10, canvas.height-20);
 				else ctx.strokeText("Fully Resistant to: "+ walker.resistance.key, 10, canvas.height-20);
 		}
@@ -702,7 +704,7 @@ function gameOver(){
 			highscore[i]= timer;
 			break;
 		}
-		if(timer>highscore[i]){
+		if(timer<highscore[i]){
 			highscore.splice(i,0,timer);
 			highscore.pop();
 			break;
