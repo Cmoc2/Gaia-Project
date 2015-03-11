@@ -210,8 +210,8 @@ function clickLocation(evt){
 			break;
 		case how_to_play:
 			//if on back button
-			if(mousePos.x >=0 && mousePos.x<=50 &&
-			mousePos.y >=0 && mousePos.y<=50){
+			if(mousePos.x >=0 && mousePos.x<=back_button.width &&
+			mousePos.y >=100 && mousePos.y<=back_button.height){
 				if(soundFX == true) button_sound.play();
 				_screen = main_menu;
 				}
@@ -426,7 +426,9 @@ function how_to_play_page(){
 		//Titan description
 	}else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 300 && mousePos.y < 380){
 		ctx.strokeText("This is Titan, god of Earth.", 10, canvas.height-80);
-	}
+		//pause button
+	}else if(mousePos.x >canvas.width-50 && mousePos.x<=canvas.width && mousePos.y>0 && mousePos.y<=pause_button.height)
+		ctx.strokeText("Pause button. Access game options through here.",10, canvas.height-80);
 	//general 
 	else{
 		ctx.strokeText("Mouse over an item to read it's description.",10, canvas.height-80);
