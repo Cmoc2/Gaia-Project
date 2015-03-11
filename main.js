@@ -54,11 +54,11 @@ var deityList = {head: SHIVA, tail: TITAN, length: 3};
 var ICECAP = {key: "ICECAP", population: 1000000, maxPop: 1000000};
 
 //city nodes
-var LA = {key: "LA", population: 5000, next: null,  posX: 300, posY: 100, resetPopulation: 5000, resistance: null, resistAmount: 150};
-var BOSTON = {key: "BOSTON", population: 5000, next: LA, posX: 150, posY: 200, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var HOUSTON = {key: "HOUSTON", population: 5000, next: BOSTON, posX: 450, posY: 200, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var SF = {key: "SF", population: 5000, next: HOUSTON, posX: 290, posY: 400, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var VEGAS = {key: "VEGAS", population: 5000, next: SF, posX: 500, posY: 400, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 5000, next: null,  posX: 300, posY: 100, resetPopulation: 100000, resistance: null, resistAmount: 150};
+var BOSTON = {key: "BOSTON", population: 5000, next: LA, posX: 150, posY: 200, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var HOUSTON = {key: "HOUSTON", population: 5000, next: BOSTON, posX: 450, posY: 200, resetPopulation: 70000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var SF = {key: "SF", population: 5000, next: HOUSTON, posX: 290, posY: 400, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var VEGAS = {key: "VEGAS", population: 5000, next: SF, posX: 500, posY: 400, resetPopulation: 60000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: VEGAS, tail: LA, length: 5};
