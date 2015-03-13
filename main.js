@@ -43,9 +43,9 @@ musicOn = true, soundFX = true, showGod = false;
 main();
 //deity nodes
 var deity = null;
-var TITAN = {key: "Titan", damage: 1500, next: null, posX: 530, posY: 300, color: earth};
-var IFRIT = {key: "Leviathan", damage: 1500, next: TITAN, posX: 530, posY: 200, color: rain};
-var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 530, posY: 100, color: wind};
+var TITAN = {key: "Titan", damage: 500, next: null, posX: 530, posY: 300, color: earth};
+var IFRIT = {key: "Leviathan", damage: 500, next: TITAN, posX: 530, posY: 200, color: rain};
+var SHIVA = {key: "Garuda", damage: 500, next: IFRIT, posX: 530, posY: 100, color: wind};
 
 //deity list
 var deityList = {head: SHIVA, tail: TITAN, length: 3};
@@ -54,11 +54,11 @@ var deityList = {head: SHIVA, tail: TITAN, length: 3};
 var ICECAP = {key: "ICECAP", population: 1000000, maxPop: 1000000};
 
 //city nodes
-var LA = {key: "LA", population: 5000, next: null,  posX: 300, posY: 100, resetPopulation: 5000, resistance: null, resistAmount: 150};
-var BOSTON = {key: "BOSTON", population: 5000, next: LA, posX: 150, posY: 200, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var HOUSTON = {key: "HOUSTON", population: 5000, next: BOSTON, posX: 450, posY: 200, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var SF = {key: "SF", population: 5000, next: HOUSTON, posX: 290, posY: 400, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
-var VEGAS = {key: "VEGAS", population: 5000, next: SF, posX: 500, posY: 400, resetPopulation: 5000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var LA = {key: "LA", population: 5000, next: null,  posX: 300, posY: 100, resetPopulation: 100000, resistance: null, resistAmount: 150};
+var BOSTON = {key: "BOSTON", population: 5000, next: LA, posX: 150, posY: 200, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var HOUSTON = {key: "HOUSTON", population: 5000, next: BOSTON, posX: 375, posY: 300, resetPopulation: 70000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var SF = {key: "SF", population: 5000, next: HOUSTON, posX: 290, posY: 400, resetPopulation: 90000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
+var VEGAS = {key: "VEGAS", population: 5000, next: SF, posX: 500, posY: 400, resetPopulation: 60000, resistance: null, resistAmount: 150}; //not sure if this is how you can save 'color';
 
 //cityList
 var cityList = {head: VEGAS, tail: LA, length: 5};
@@ -73,6 +73,7 @@ function main(){
 	//Set up the canvas.
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
+	
 	//Set up game Audio
 	loadAudio();
 	loadImages();
@@ -185,9 +186,9 @@ function clickLocation(evt){
 						if(walker.resistance == deity){
 							walker.population -= Math.floor(deity.damage-resistAmount>=0?
 										deity.damage-resistAmount:0);
-							resistAmount +=(deity.damage/2);
+							resistAmount +=(100);
 							}else{
-								resistAmount -= deity.damage/4; 
+								resistAmount /= 2; 
 								walker.population -=Math.floor(deity.damage-resistAmount>=0?
 										deity.damage-resistAmount:0);}
 						walker.resistance = deity;
@@ -205,6 +206,7 @@ function clickLocation(evt){
 			}
 			//if on pause
 			if(mousePos.x >= canvas.width - 50 && mousePos.x <= canvas.width && mousePos.y >=0 && mousePos.y <= 50){
+				canvas.style.cursor = 'auto';
 				_screen = pause_menu;
 				if(soundFX == true) button_sound.play();
 			}
@@ -294,13 +296,17 @@ function keyboardAction(evt){
 				else{ track.play(); musicOn = !musicOn;}
 			break;
 		case Key_K:
-			for(var i = cityList.head;i!=null;i=i.next){
-				i.population = 100000;
-			}
+				deity.damage = 20000
 			break;
 		case Key_Esc:
 			if(_screen == pause_menu) _screen = play_game;
-				else if(_screen == play_game) _screen = pause_menu;
+				else if(_screen == play_game){
+					if(deity != null){
+						deity = null;
+						canvas.style.cursor = "auto";
+						}
+						else _screen = pause_menu;
+				}
 			break;
 		default:
 	}
@@ -319,8 +325,9 @@ function update(){
 	//if the game is going.
 	//console.log(mousePos.x + ","+ mousePos.y)     //test mouse coordinates
 	if(_screen == play_game)
-	{		
+	{
 	}
+	if(_screen == gameOver_screen) canvas.style.cursor = 'auto';
 }
 
 function draw(){
@@ -343,7 +350,7 @@ function init(){
 	percentage = 0.0;
 	level = 1;
 	resistAmount = 150;
-	SHIVA.damage = TITAN.damage = IFRIT.damage = 1500;
+	SHIVA.damage = TITAN.damage = IFRIT.damage = 500;
 }
 //clooop[]https://github.com/lazytaroice/Gaia
 //placeholder for the start of the game.
@@ -351,11 +358,12 @@ function theGame(){
 	showGod = false;
 	canvas.width = canvas.width;
 	ctx.drawImage(game_background, 0, 0, canvas.width, canvas.height);
-	ctx.drawImage(landmass, 0, 0);
+	ctx.drawImage(landmass, 50, 25);
 	ctx.drawImage(pause_button, canvas.width-50, 0, 50, 50);
 	
 	
 	showIcecap();
+	ctx.font = " 12px arial";
 	//Update
 	var sum = 0;
 		//timer.
@@ -395,15 +403,18 @@ function theGame(){
 	/*hovering over functioning city */
 	cityHover();
 	
+	//check if all the cities have been destroyed
 	if(level==6){
 		alert("Congratulations! You destroyed all the cities!");
 		gameOver();
-	} else 
-	//check if all the cities have been destroyed
-	checkDestroyed();
+		} else checkDestroyed();
+	
+	//Draw gods on right side
+	displayGods();
 }
 
 function menu(){
+	canvas.style.cursor = 'auto';
 	ctx.drawImage(main_background,0,0, canvas.width,canvas.height);
 	ctx.drawImage(play_button, canvas.width/2-50, canvas.height/2);
 	ctx.drawImage(settings_button, canvas.width-50, canvas.height-50, 50, 50);
@@ -412,8 +423,8 @@ function menu(){
 	//show high score table
 	for(var i = 0; i<highscore.length;i++){
 		if(highscore[i]==null)continue;
-		if(highscore[i]%60<10) ctx.strokeText((i+1)+". "+Math.floor(highscore[i]/60)+":0"+ highscore[i]%60, 10, canvas.height/2-50);
-			else ctx.strokeText((i+1)+". "+ Math.floor(highscore[i]/60)+":"+ highscore[i]%60, 10, canvas.height/2-50);
+		if(highscore[i]%60<10) ctx.strokeText((i+1)+". "+Math.floor(highscore[i]/60)+":0"+ highscore[i]%60, 10, canvas.height/2-50+20*i);
+			else ctx.strokeText((i+1)+". "+ Math.floor(highscore[i]/60)+":"+ highscore[i]%60, 10, canvas.height/2-50+20*i);
 	}
 }
 
@@ -439,23 +450,25 @@ function how_to_play_page(){
 	//ice cap description
 	if(mousePos.x > 0 && mousePos.x < 100 && mousePos.y > 0 && mousePos.y < 100){
 		ctx.strokeText("Ice Caps are melting due to human emissions!", 10, canvas.height-80);
-		ctx.strokeText("If the Ice Cap hits 0% it's game over.", 10, canvas.height-70);
+		ctx.strokeText("The ice cap melts slower the more the populations are decimated.", 10, canvas.height-80);
+		ctx.strokeText("If the Ice Cap hits 0% it's game over.", 10, canvas.height-60);
 		//city description
 	} else if(mousePos.x > 250 && mousePos.x < 350 && mousePos.y > 50 && mousePos.y < 150){
 		ctx.strokeText("Here is your target objective.", 10, canvas.height-80);
-		ctx.strokeText("Use the power of the gods to annihilate the human race", 10, canvas.height-70);
+		ctx.strokeText("Use the power of the gods by clicking or pressing the corresponding key to annihilate the human race.", 10, canvas.height-70);
+		ctx.strokeText("Attacking with one god continuously causes the city to be resistant to their damage.", 10, canvas.height-60);
 		//Garuda description
 	} else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 100 && mousePos.y < 180){
-		ctx.strokeText("This is Garuda, god of wind.", 10, canvas.height-80);
+		ctx.strokeText("1. This is Garuda, god of wind.", 10, canvas.height-80);
 		//leviathan description
 	}else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 200 && mousePos.y < 280){
-		ctx.strokeText("This is Leviathan, god of rain.", 10, canvas.height-80);
+		ctx.strokeText("2. This is Leviathan, god of rain.", 10, canvas.height-80);
 		//Titan description
 	}else if(mousePos.x > 530 && mousePos.x < 770 && mousePos.y > 300 && mousePos.y < 380){
-		ctx.strokeText("This is Titan, god of Earth.", 10, canvas.height-80);
+		ctx.strokeText("3. This is Titan, god of Earth.", 10, canvas.height-80);
 		//pause button
 	}else if(mousePos.x >canvas.width-50 && mousePos.x<=canvas.width && mousePos.y>0 && mousePos.y<=pause_button.height)
-		ctx.strokeText("Pause button. Access game options through here.",10, canvas.height-80);
+		ctx.strokeText("Esc. Access game options through here.",10, canvas.height-80);
 	//general 
 	else{
 		ctx.strokeText("Mouse over an item to read it's description.",10, canvas.height-80);
@@ -571,7 +584,7 @@ function displayGods(){
 		//Display Red border on chosen God.
 		if(deity != null)
 		{
-			ctx.strokeText("Deity Selected: " + deity.key, 1,10);
+			ctx.fillText("Deity Selected: " + deity.key, 1,10);
 			ctx.strokeStyle = "red";
 			ctx.lineWidth = "5";
 			switch(deity.key)
@@ -583,6 +596,7 @@ function displayGods(){
 				    ctx.lineTo(SHIVA.posX+55, SHIVA.posY+80);
 				    ctx.lineTo(SHIVA.posX, SHIVA.posY);
 				    ctx.lineTo(SHIVA.posX+50, SHIVA.posY);
+				    canvas.style.cursor = "none";
 				    ctx.drawImage(hurricaneSprite,mousePos.x-hurricaneSprite.width/4,mousePos.y-hurricaneSprite.height/4,50,50);
 					break;
 				case TITAN.key:
@@ -592,6 +606,7 @@ function displayGods(){
 				    ctx.lineTo(TITAN.posX+55, TITAN.posY+80);
 				    ctx.lineTo(TITAN.posX, TITAN.posY);
 				    ctx.lineTo(TITAN.posX+50, TITAN.posY);
+				    canvas.style.cursor = "none";
 				    ctx.drawImage(quakeSprite,mousePos.x-quakeSprite.width/4,mousePos.y-quakeSprite.height/4,50,50);
 					break;
 				case IFRIT.key:
@@ -601,6 +616,7 @@ function displayGods(){
 				    ctx.lineTo(IFRIT.posX+55, IFRIT.posY+80);
 				    ctx.lineTo(IFRIT.posX, IFRIT.posY);
 				    ctx.lineTo(IFRIT.posX+50, IFRIT.posY);
+				    canvas.style.cursor = "none";
 				    ctx.drawImage(rainSprite,mousePos.x-rainSprite.width/4,mousePos.y-rainSprite.height/4,50,50);
 					break;
 
@@ -632,6 +648,7 @@ function deityHover(){
 			//fill box with stats.
 			ctx.fillStyle="white"; //might want to replace with a nice image
 			ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
+			ctx.fillStyle="black";
 			ctx.strokeText(i.key,10, canvas.height-80);
 			ctx.strokeText("Damage: "+i.damage,10, canvas.height-60);
 		}
@@ -647,6 +664,7 @@ function cityHover(){
 		ctx.fillStyle="white"; //might want to replace with a nice image
 		ctx.fillRect(0, canvas.height-100, canvas.width, canvas.height);
 		//ctx.strokeText("City Health: "+walker.HP,10, canvas.height-60);
+		ctx.fillStyle='black';
 		ctx.strokeText("City Name: "+walker.key,10, canvas.height-80);
 		ctx.strokeText("Population: "+walker.population,10, canvas.height-60);
 		if(walker.resistance.key) 
@@ -673,6 +691,7 @@ function codetoMakecoinRotate(){
 } */
 
 function upgradeScreen(){
+	canvas.style.cursor = 'auto';
 	//box background
 	var grd=ctx.createLinearGradient(300,200,500,475);
 	grd.addColorStop(0,"black");
@@ -729,6 +748,7 @@ function gameOver(){
 			else ctx.strokeText((i+1)+". "+ Math.floor(highscore[i]/60)+":"+ highscore[i]%60, 310,220+20*i);
 	}
 	ctx.strokeText("Return to Menu", 320, 220+20*highscore.length);
+	canvas.style.cursor = 'auto';
 	_screen = gameOver_screen;
 }
 function checkDestroyed(){
@@ -748,7 +768,6 @@ function checkDestroyed(){
 			/* It is being placed here so the text won't
 			be written with every update,
 			preventing it from getting blurry*/
-			                     
 			 _screen = upgrade_screen;
 	}
 }
