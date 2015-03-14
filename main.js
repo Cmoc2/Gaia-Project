@@ -43,9 +43,9 @@ musicOn = true, soundFX = true, showGod = false;
 main();
 //deity nodes
 var deity = null;
-var TITAN = {key: "Titan", damage: 500, next: null, posX: 530, posY: 300, color: earth};
-var IFRIT = {key: "Leviathan", damage: 500, next: TITAN, posX: 530, posY: 200, color: rain};
-var SHIVA = {key: "Garuda", damage: 500, next: IFRIT, posX: 530, posY: 100, color: wind};
+var TITAN = {key: "Titan", damage: 1500, next: null, posX: 530, posY: 300, color: earth};
+var IFRIT = {key: "Leviathan", damage: 1500, next: TITAN, posX: 530, posY: 200, color: rain};
+var SHIVA = {key: "Garuda", damage: 1500, next: IFRIT, posX: 530, posY: 100, color: wind};
 
 //deity list
 var deityList = {head: SHIVA, tail: TITAN, length: 3};
@@ -296,7 +296,6 @@ function keyboardAction(evt){
 				else{ track.play(); musicOn = !musicOn;}
 			break;
 		case Key_K:
-				deity.damage = 20000
 			break;
 		case Key_Esc:
 			if(_screen == pause_menu) _screen = play_game;
@@ -450,7 +449,7 @@ function how_to_play_page(){
 	//ice cap description
 	if(mousePos.x > 0 && mousePos.x < 100 && mousePos.y > 0 && mousePos.y < 100){
 		ctx.strokeText("Ice Caps are melting due to human emissions!", 10, canvas.height-80);
-		ctx.strokeText("The ice cap melts slower the more the populations are decimated.", 10, canvas.height-80);
+		ctx.strokeText("The ice cap melts slower the more the populations are decimated.", 10, canvas.height-70);
 		ctx.strokeText("If the Ice Cap hits 0% it's game over.", 10, canvas.height-60);
 		//city description
 	} else if(mousePos.x > 250 && mousePos.x < 350 && mousePos.y > 50 && mousePos.y < 150){
